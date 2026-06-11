@@ -1,0 +1,86 @@
+---
+import Sidebar from "./Sidebar.astro";
+import TOC from "./TOC.astro";
+import Breadcrumbs from "./Breadcrumbs.astro";
+import PrevNext from "./PrevNext.astro";
+import type { SidebarItem, SidebarLink } from "../utils/sidebar";
+import type { Breadcrumb } from "../utils/breadcrumbs";
+
+interface Props {
+  title: string;
+  description?: string;
+  sidebar?: SidebarItem[];
+  headings?: { depth: number; slug: string; text: string }[];
+  breadcrumbs?: Breadcrumb[];
+  prev?: SidebarLink;
+  next?: SidebarLink;
+  currentPath?: string;
+  tableOfContents?: boolean;
+  lang?: string;
+}
+
+const {
+  title,
+  description,
+  sidebar = [],
+  headings = [],
+  breadcrumbs = [],
+  prev,
+  next,
+  currentPath,
+  tableOfContents = true,
+  lang = "en",
+} = Astro.props;
+
+const showToc = tableOfContents && headings.filter((h) => h.depth > 1 && h.depth < 4).length >= 2;
+---
+
+<!doctype html>
+<html lang={lang}>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    {description && <meta name="description" content={description} />}
+    <title>{title}</title>
+    <slot name="head" />
+  </head>
+  <body class="docs-body">
+    <slot name="header" />
+
+    <div class="docs-layout">
+      {sidebar.length > 0 && (
+        <aside class="docs-sidebar">
+          <slot name="sidebar-header" />
+          <Sidebar items={sidebar} currentPath={currentPath} />
+          <slot name="sidebar-footer" />
+        </aside>
+      )}
+
+      <div class="docs-main">
+        {breadcrumbs.length > 1 && (
+          <div class="docs-breadcrumbs-bar">
+            <Breadcrumbs items={breadcrumbs} />
+          </div>
+        )}
+
+        <div class="docs-content-row">
+          <main class="docs-content" id="main-content">
+            <article>
+              <h1 class="docs-title">{title}</h1>
+              <slot />
+            </article>
+            <PrevNext {prev} {next} />
+          </main>
+
+          {showToc && (
+            <aside class="docs-toc-aside">
+              <TOC {headings} />
+            </aside>
+          )}
+        </div>
+      </div>
+    </div>
+
+    <slot name="footer" />
+  </body>
+</html>
