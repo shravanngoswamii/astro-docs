@@ -1,0 +1,32 @@
+@layer docs.reset {
+  *,
+  *::before,
+  *::after {
+    box-sizing: border-box;
+  }
+
+  body {
+    margin: 0;
+  }
+
+  :where(h1, h2, h3, h4, h5, h6, p, ul, ol, figure, blockquote) {
+    margin: 0;
+  }
+
+  :where(a) {
+    color: inherit;
+  }
+
+  :where(img, svg) {
+    max-width: 100%;
+    height: auto;
+  }
+
+  :where(button) {
+    font: inherit;
+    color: inherit;
+    background: none;
+    border: none;
+    cursor: pointer;
+  }
+}

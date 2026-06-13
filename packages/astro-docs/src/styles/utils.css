@@ -1,0 +1,26 @@
+@layer docs.utils {
+  .sr-only {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    margin: -1px;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+    white-space: nowrap;
+    border: 0;
+  }
+
+  .docs-skip-link {
+    position: absolute;
+    top: 0.5rem;
+    left: 0.5rem;
+    z-index: 100;
+    padding: 0.5rem 0.85rem;
+    background: var(--docs-color-bg);
+    border: 1px solid var(--docs-color-text);
+    transform: translateY(-150%);
+    transition: transform 0.15s;
+  }
+  .docs-skip-link:focus { transform: translateY(0); }
+}

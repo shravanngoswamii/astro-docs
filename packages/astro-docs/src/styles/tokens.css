@@ -1,0 +1,37 @@
+@layer docs.tokens {
+  :root {
+    --docs-color-bg: #ffffff;
+    --docs-color-text: #1a1a1a;
+    --docs-color-muted: #5c5c5c;
+    --docs-color-border: #e2e2e2;
+    --docs-color-accent: #1a1a1a;
+    --docs-color-code-bg: #f4f4f4;
+    --docs-color-sidebar-bg: transparent;
+    --docs-color-sidebar-active-bg: #f0f0f0;
+
+    --docs-font-body: system-ui, -apple-system, "Segoe UI", sans-serif;
+    --docs-font-mono: ui-monospace, "SF Mono", "Cascadia Code", Menlo, monospace;
+    --docs-font-ui: var(--docs-font-body);
+
+    --docs-font-size-base: 1rem;
+    --docs-line-height: 1.7;
+
+    --docs-sidebar-width: 17rem;
+    --docs-toc-width: 14rem;
+    --docs-content-max-width: 48rem;
+    --docs-header-height: 4rem;
+    --docs-gutter: 2rem;
+    --docs-border-radius: 0;
+  }
+
+  [data-theme="dark"] {
+    --docs-color-bg: #16171a;
+    --docs-color-text: #e8e8e8;
+    --docs-color-muted: #9a9a9a;
+    --docs-color-border: #2c2e33;
+    --docs-color-accent: #ffffff;
+    --docs-color-code-bg: #1e2024;
+    --docs-color-sidebar-bg: transparent;
+    --docs-color-sidebar-active-bg: #25272c;
+  }
+}

@@ -1,0 +1,17 @@
+{
+  "skipLink.label": "Skip to content",
+  "search.label": "Search",
+  "search.placeholder": "Search",
+  "search.shortcut": "Ctrl K",
+  "sidebar.label": "Site navigation",
+  "toc.label": "On this page",
+  "toc.overview": "Overview",
+  "pagination.prev": "Previous",
+  "pagination.next": "Next",
+  "editLink.label": "Edit this page",
+  "lastUpdated.label": "Last updated:",
+  "breadcrumbs.label": "Breadcrumb",
+  "themeSelect.label": "Toggle dark mode",
+  "404.title": "Page not found",
+  "404.text": "The page you are looking for does not exist."
+}

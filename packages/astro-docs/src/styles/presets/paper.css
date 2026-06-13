@@ -1,0 +1,29 @@
+@layer docs.theme {
+  :root {
+    --docs-color-bg: #fefcf7;
+    --docs-color-text: #1a1a1a;
+    --docs-color-muted: #6b6457;
+    --docs-color-border: #e3ddd1;
+    --docs-color-accent: #1a1a1a;
+    --docs-color-code-bg: #f0ede4;
+    --docs-color-sidebar-bg: transparent;
+    --docs-color-sidebar-active-bg: #efebe1;
+
+    --docs-font-body: Georgia, "Times New Roman", serif;
+    --docs-font-mono: ui-monospace, "Cascadia Code", Menlo, monospace;
+    --docs-font-ui: ui-monospace, Menlo, monospace;
+
+    --docs-content-max-width: 44rem;
+    --docs-border-radius: 0;
+  }
+
+  [data-theme="dark"] {
+    --docs-color-bg: #14130f;
+    --docs-color-text: #ece7db;
+    --docs-color-muted: #9a9079;
+    --docs-color-border: #322e25;
+    --docs-color-accent: #fefcf7;
+    --docs-color-code-bg: #1d1b15;
+    --docs-color-sidebar-active-bg: #221f18;
+  }
+}
