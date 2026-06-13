@@ -29,7 +29,7 @@ This is the locked contract every file in the package follows. Read before editi
 
 User `customCss` is imported **unlayered** (via `virtual:astro-docs/user-css`, plain JS `import "x.css"`). Unlayered CSS always beats layered CSS in the cascade, so the user's own site styles win unconditionally — this is the Starlight-proven mechanism and the #1 differentiator. `Page.astro` imports `layers.css` first to fix layer order, then framework layers, then `virtual:astro-docs/user-css` last.
 
-Token prefix is `--docs-*`. Core tokens: `--docs-color-bg`, `--docs-color-text`, `--docs-color-muted`, `--docs-color-border`, `--docs-color-accent`, `--docs-color-code-bg`, `--docs-color-sidebar-bg`, `--docs-color-sidebar-active-bg`, `--docs-sidebar-width`, `--docs-toc-width`, `--docs-content-max-width`, `--docs-font-body`, `--docs-font-mono`, `--docs-font-ui`, `--docs-font-size-base`, `--docs-line-height`, `--docs-border-radius`.
+Token prefix is `--docs-*`. Core tokens: `--docs-color-bg`, `--docs-color-text`, `--docs-color-muted`, `--docs-color-border`, `--docs-color-accent`, `--docs-color-code-bg`, `--docs-color-sidebar-bg`, `--docs-color-sidebar-active-bg`, `--docs-sidebar-width`, `--docs-toc-width`, `--docs-content-max-width`, `--docs-header-height`, `--docs-gutter`, `--docs-font-body`, `--docs-font-mono`, `--docs-font-ui`, `--docs-font-size-base`, `--docs-line-height`, `--docs-border-radius`.
 
 ## Route data shape (`Astro.locals.astroDocs`)
 
