@@ -1,0 +1,77 @@
+/* Book reading aesthetic — paper: cream, serif, generous measure.
+   Applied automatically to pages in a `kind: "book"` collection via the
+   `data-docs-kind="book"` attribute on <html>. Override freely. */
+
+@layer docs.theme {
+  [data-docs-kind="book"] {
+    --docs-color-bg: #fefcf7;
+    --docs-color-surface: #fefcf7;
+    --docs-color-surface-muted: #f0ece2;
+    --docs-color-text: #1a1a1a;
+    --docs-color-muted: #6b6457;
+    --docs-color-border: #e3ddd1;
+    --docs-color-code-bg: #f0ede4;
+    --docs-color-sidebar-active-bg: #efe9dd;
+    --docs-color-accent: #1a1a1a;
+    --docs-color-accent-strong: #000000;
+
+    --docs-font-body: Georgia, "Times New Roman", serif;
+    --docs-font-ui: ui-monospace, Menlo, monospace;
+    --docs-line-height: 1.8;
+    --docs-content-max-width: 42rem;
+    --docs-border-radius: 0;
+  }
+
+  [data-docs-kind="book"][data-theme="dark"] {
+    --docs-color-bg: #14130f;
+    --docs-color-surface: #14130f;
+    --docs-color-surface-muted: #221f18;
+    --docs-color-text: #ece7db;
+    --docs-color-muted: #9a9079;
+    --docs-color-border: #322e25;
+    --docs-color-code-bg: #1d1b15;
+    --docs-color-sidebar-active-bg: #221f18;
+    --docs-color-accent: #ece7db;
+    --docs-color-accent-strong: #fefcf7;
+  }
+}
+
+@layer docs.components {
+  /* Soften the top accent wash to a neutral paper tint. */
+  [data-docs-kind="book"].docs-body {
+    background:
+      linear-gradient(180deg, rgba(0, 0, 0, 0.015), transparent 20rem),
+      var(--docs-color-bg);
+  }
+  [data-docs-kind="book"] .docs-main { padding-block-start: 3rem; }
+  [data-docs-kind="book"] .docs-pagination-link { background: transparent; }
+  [data-docs-kind="book"] .docs-callout { background: var(--docs-color-code-bg); }
+}
+
+@layer docs.content {
+  [data-docs-kind="book"] .docs-title {
+    font-size: clamp(2.1rem, 4vw, 2.8rem);
+    letter-spacing: 0;
+  }
+  [data-docs-kind="book"] .docs-content h3 { font-style: italic; }
+  [data-docs-kind="book"] .docs-content p { margin: 1.15rem 0; }
+  [data-docs-kind="book"] .docs-content a {
+    color: inherit;
+    font-weight: inherit;
+    text-decoration: underline;
+    text-decoration-style: dashed;
+    text-underline-offset: 0.2em;
+    text-decoration-color: color-mix(in srgb, var(--docs-color-text) 45%, transparent);
+  }
+  [data-docs-kind="book"] .docs-content a:hover { text-decoration-style: solid; }
+  [data-docs-kind="book"] .docs-content blockquote {
+    border-radius: 0;
+    background: transparent;
+    font-style: italic;
+  }
+  [data-docs-kind="book"] .docs-content img {
+    border: 1px solid var(--docs-color-border);
+    border-radius: 0;
+  }
+  [data-docs-kind="book"] .docs-xref { color: inherit; font-weight: inherit; }
+}

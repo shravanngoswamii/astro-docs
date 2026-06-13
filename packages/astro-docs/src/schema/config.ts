@@ -62,7 +62,7 @@ export const UserConfigSchema = z.object({
   editLink: z.object({ baseUrl: z.string().url() }).optional(),
 
   customCss: z.array(z.string()).default([]),
-  theme: z.string().default("paper"),
+  theme: z.string().default("default"),
   colorScheme: z.enum(["light", "dark", "both"]).default("light"),
 
   head: z.array(headTagSchema).default([]),

@@ -1,5 +1,10 @@
-/* Bring-your-own-look demo: this unlayered CSS overrides framework defaults
-   without fighting specificity, because all framework styles live in @layer. */
-:root {
-  --docs-color-accent: #b8460e;
-}
+/* Bring-your-own-look hook. Anything here is imported unlayered, so it wins
+   over the framework's layered defaults without specificity battles.
+
+   Example — uncomment to rebrand the accent across the whole site:
+
+   :root {
+     --docs-color-accent: #b8460e;
+     --docs-color-accent-strong: #8f370b;
+   }
+*/

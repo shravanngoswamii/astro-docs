@@ -36,9 +36,10 @@ function defaultComponentPath(srcDir: string, name: string): string {
 
 const BUILTIN_PRESETS = new Set(["paper"]);
 
-/** JS module that imports the selected theme preset CSS (empty for "none"). */
+/** JS module that imports the selected theme preset CSS (empty for the built-in base). */
 function resolveThemeCss(theme: string, srcDir: string, root: string): string {
-  if (theme === "none") return "";
+  // "default" is the clean built-in look (base tokens); "none" ships no skin.
+  if (theme === "none" || theme === "default") return "";
   if (BUILTIN_PRESETS.has(theme)) {
     return `import ${JSON.stringify(resolve(srcDir, "styles", "presets", `${theme}.css`))};`;
   }

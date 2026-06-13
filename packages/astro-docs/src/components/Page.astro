@@ -5,6 +5,7 @@ import "../styles/reset.css";
 import "virtual:astro-docs/theme-css";
 import "../styles/components.css";
 import "../styles/content.css";
+import "../styles/book.css";
 import "../styles/utils.css";
 import "virtual:astro-docs/user-css";
 
@@ -24,7 +25,7 @@ const dir =
 const enableThemeJs = config.colorScheme !== "light";
 ---
 
-<html lang={lang} dir={dir} data-theme="light">
+<html lang={lang} dir={dir} data-theme="light" data-docs-kind={route.kind}>
   <head>
     <Head />
     {enableThemeJs && <ThemeProvider />}
