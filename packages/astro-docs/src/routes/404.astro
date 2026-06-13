@@ -1,0 +1,43 @@
+---
+import { getCollection } from "astro:content";
+import config from "virtual:astro-docs/config";
+import Page from "../components/Page.astro";
+import { buildSidebar, type SidebarEntry } from "../utils/sidebar";
+import { useTranslations } from "../utils/i18n";
+
+const t = useTranslations(config.defaultLocale);
+
+const [primary] = Object.entries(config.collections);
+let sidebar: ReturnType<typeof buildSidebar> = [];
+let base = "/";
+if (primary) {
+  const [name, mount] = primary;
+  base = mount.base;
+  const entries = (await getCollection(name as any, (e: any) => !e.data.draft)) as SidebarEntry[];
+  sidebar = buildSidebar({
+    config: mount.sidebar ?? config.sidebar,
+    entries,
+    base,
+    currentSlug: "\0none",
+  });
+}
+
+Astro.locals.astroDocs = {
+  id: "404",
+  slug: "404",
+  url: "/404",
+  kind: "docs",
+  title: t("404.title"),
+  headings: [],
+  sidebar,
+  toc: undefined,
+  pagination: {},
+  breadcrumbs: [{ label: t("404.title") }],
+  editUrl: undefined,
+  lastUpdated: undefined,
+};
+---
+
+<Page>
+  <p>{t("404.text")}</p>
+</Page>
