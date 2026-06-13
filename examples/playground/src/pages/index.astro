@@ -1,0 +1,21 @@
+---
+const links = [
+  { href: "/docs", label: "Documentation" },
+  { href: "/book", label: "The Book" },
+];
+---
+
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>astro-docs playground</title>
+  </head>
+  <body style="font-family: system-ui; max-width: 40rem; margin: 4rem auto; padding: 0 1rem;">
+    <h1>astro-docs playground</h1>
+    <p>A demo site consuming the astro-docs framework.</p>
+    <ul>
+      {links.map((l) => <li><a href={l.href}>{l.label}</a></li>)}
+    </ul>
+  </body>
+</html>

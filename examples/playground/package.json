@@ -1,0 +1,16 @@
+{
+  "name": "playground",
+  "type": "module",
+  "private": true,
+  "version": "0.0.0",
+  "scripts": {
+    "dev": "astro dev",
+    "build": "astro build",
+    "preview": "astro preview"
+  },
+  "dependencies": {
+    "astro": "^6.4.4",
+    "astro-docs": "*",
+    "pagefind": "^1.5.2"
+  }
+}

@@ -1,0 +1,5 @@
+/* Bring-your-own-look demo: this unlayered CSS overrides framework defaults
+   without fighting specificity, because all framework styles live in @layer. */
+:root {
+  --docs-color-accent: #b8460e;
+}
