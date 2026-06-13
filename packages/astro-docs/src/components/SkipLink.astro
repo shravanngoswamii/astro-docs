@@ -1,0 +1,8 @@
+---
+import config from "virtual:astro-docs/config";
+import { useTranslations } from "../utils/i18n";
+
+const t = useTranslations(config.defaultLocale);
+---
+
+<a class="docs-skip-link" href="#main-content">{t("skipLink.label")}</a>

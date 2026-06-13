@@ -1,0 +1,38 @@
+---
+import "../styles/layers.css";
+import "../styles/tokens.css";
+import "../styles/reset.css";
+import "virtual:astro-docs/theme-css";
+import "../styles/components.css";
+import "../styles/content.css";
+import "../styles/utils.css";
+import "virtual:astro-docs/user-css";
+
+import config from "virtual:astro-docs/config";
+import Head from "virtual:astro-docs/components/Head";
+import ThemeProvider from "virtual:astro-docs/components/ThemeProvider";
+import SkipLink from "virtual:astro-docs/components/SkipLink";
+import PageFrame from "virtual:astro-docs/components/PageFrame";
+
+const route = Astro.locals.astroDocs;
+const lang =
+  (config.locales && config.defaultLocale && config.locales[config.defaultLocale]?.lang) ||
+  "en";
+const dir =
+  (config.locales && config.defaultLocale && config.locales[config.defaultLocale]?.dir) ||
+  "ltr";
+const enableThemeJs = config.colorScheme !== "light";
+---
+
+<html lang={lang} dir={dir} data-theme="light">
+  <head>
+    <Head />
+  </head>
+  <body class="docs-body">
+    {enableThemeJs && <ThemeProvider />}
+    <SkipLink />
+    <PageFrame>
+      <slot />
+    </PageFrame>
+  </body>
+</html>

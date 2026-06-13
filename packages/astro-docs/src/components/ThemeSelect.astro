@@ -1,0 +1,27 @@
+---
+import config from "virtual:astro-docs/config";
+import { useTranslations } from "../utils/i18n";
+
+const t = useTranslations(config.defaultLocale);
+---
+
+<button
+  class="docs-theme-toggle"
+  data-theme-toggle
+  type="button"
+  aria-label={t("themeSelect.label")}
+  title={t("themeSelect.label")}>◐</button>
+
+<script>
+  const KEY = "astro-docs-theme";
+  document.querySelector("[data-theme-toggle]")?.addEventListener("click", () => {
+    const root = document.documentElement;
+    const next = root.dataset.theme === "dark" ? "light" : "dark";
+    root.dataset.theme = next;
+    try {
+      localStorage.setItem(KEY, next);
+    } catch {
+      // localStorage may be unavailable (private mode); toggle still works for the session.
+    }
+  });
+</script>

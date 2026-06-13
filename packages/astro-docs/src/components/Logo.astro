@@ -1,0 +1,32 @@
+---
+import config from "virtual:astro-docs/config";
+
+const logo = config.logo;
+const hasVariants = logo !== undefined && "dark" in logo;
+---
+
+{
+  logo !== undefined &&
+    (hasVariants ? (
+      <span class="docs-logo">
+        <img class="docs-logo-light" src={logo.light} alt={logo.alt} height="28" />
+        <img class="docs-logo-dark" src={logo.dark} alt={logo.alt} height="28" />
+      </span>
+    ) : (
+      <img class="docs-logo" src={logo.src} alt={logo.alt} height="28" />
+    ))
+}
+
+<style>
+  /* Theme-swapped logo: components.css must stay theme-agnostic, so the
+     light/dark visibility toggle lives here, scoped to this component. */
+  .docs-logo-dark {
+    display: none;
+  }
+  :global([data-theme="dark"]) .docs-logo-light {
+    display: none;
+  }
+  :global([data-theme="dark"]) .docs-logo-dark {
+    display: inline;
+  }
+</style>

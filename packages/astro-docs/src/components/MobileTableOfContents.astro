@@ -1,0 +1,51 @@
+---
+import config from "virtual:astro-docs/config";
+import { useTranslations } from "../utils/i18n";
+
+const route = Astro.locals.astroDocs;
+const t = useTranslations(config.defaultLocale);
+
+const toc = route.toc;
+---
+
+{
+  toc && toc.length > 0 && (
+    <details class="docs-toc-mobile">
+      <summary>{t("toc.label")}</summary>
+      <ul class="docs-toc-list">
+        {toc.map((item) => (
+          <li
+            class:list={[
+              "docs-toc-item",
+              `docs-toc-item--depth-${item.depth}`,
+            ]}
+          >
+            <a href={`#${item.slug}`}>{item.text}</a>
+          </li>
+        ))}
+      </ul>
+    </details>
+  )
+}
+
+<style>
+  .docs-toc-mobile {
+    font-family: var(--docs-font-ui);
+    font-size: 0.85rem;
+    margin-bottom: 1.5rem;
+  }
+  .docs-toc-mobile > summary {
+    font-weight: 700;
+    font-size: 0.72rem;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    color: var(--docs-color-muted);
+    cursor: pointer;
+  }
+  /* The desktop TOC rail covers wide screens; hide this duplicate there. */
+  @media (min-width: 1201px) {
+    .docs-toc-mobile {
+      display: none;
+    }
+  }
+</style>

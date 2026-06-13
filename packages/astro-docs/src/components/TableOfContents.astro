@@ -1,0 +1,23 @@
+---
+import config from "virtual:astro-docs/config";
+import { useTranslations } from "../utils/i18n";
+
+const route = Astro.locals.astroDocs;
+const t = useTranslations(config.defaultLocale);
+const { toc } = route;
+---
+
+{
+  toc && toc.length > 0 && (
+    <nav class="docs-toc" aria-label={t("toc.label")}>
+      <p class="docs-toc-title">{t("toc.label")}</p>
+      <ul class="docs-toc-list" role="list">
+        {toc.map((h) => (
+          <li class:list={["docs-toc-item", `docs-toc-item--depth-${h.depth}`]}>
+            <a href={`#${h.slug}`}>{h.text}</a>
+          </li>
+        ))}
+      </ul>
+    </nav>
+  )
+}

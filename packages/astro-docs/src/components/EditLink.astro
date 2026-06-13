@@ -1,0 +1,17 @@
+---
+import config from "virtual:astro-docs/config";
+import { useTranslations } from "../utils/i18n";
+
+const route = Astro.locals.astroDocs;
+const t = useTranslations(config.defaultLocale);
+
+const editUrl = route.editUrl;
+---
+
+{
+  editUrl && (
+    <a class="docs-edit-link" href={editUrl} target="_blank" rel="noopener">
+      {t("editLink.label")}
+    </a>
+  )
+}

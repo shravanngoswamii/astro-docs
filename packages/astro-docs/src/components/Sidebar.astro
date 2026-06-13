@@ -1,49 +1,57 @@
 ---
-import type { SidebarItem } from "../utils/sidebar";
+import type { ResolvedSidebarItem } from "../types";
+import config from "virtual:astro-docs/config";
+import { useTranslations } from "../utils/i18n";
+import Sidebar from "./Sidebar.astro";
 
 interface Props {
-  items: SidebarItem[];
-  currentPath?: string;
+  items?: ResolvedSidebarItem[];
 }
 
-const { items, currentPath } = Astro.props;
+const t = useTranslations(config.defaultLocale);
+
+const route = Astro.locals.astroDocs;
+const { items } = Astro.props;
+
+// When `items` is passed we are a recursive call rendering nested <li>s only;
+// otherwise we are the top-level nav rendering route.sidebar with its wrapper.
+const isRoot = items === undefined;
+const sidebarItems = items ?? route.sidebar;
 ---
 
-<nav class="docs-sidebar-nav" aria-label="Documentation">
-  <ul class="docs-sidebar-list" role="list">
-    {items.map((item) =>
-      item.type === "group" ? (
-        <li class="docs-sidebar-group">
-          <span class="docs-sidebar-group-label">{item.label}</span>
-          <ul class="docs-sidebar-list" role="list">
-            {item.items.map((child) =>
-              child.type === "link" ? (
-                <li>
-                  <a
-                    href={child.href}
-                    class:list={["docs-sidebar-link", { "docs-sidebar-link--current": child.href === currentPath }]}
-                    aria-current={child.href === currentPath ? "page" : undefined}
-                  >
-                    {child.label}
-                    {child.badge && <span class="docs-sidebar-badge">{child.badge}</span>}
-                  </a>
-                </li>
-              ) : null
-            )}
-          </ul>
+{
+  isRoot ? (
+    <nav class="docs-sidebar-nav" aria-label={t("sidebar.label")}>
+      <ul class="docs-sidebar-list" role="list">
+        <Sidebar items={sidebarItems} />
+      </ul>
+    </nav>
+  ) : (
+    sidebarItems.map((item) =>
+      item.type === "link" ? (
+        <li>
+          <a
+            class:list={[
+              "docs-sidebar-link",
+              { "docs-sidebar-link--current": item.isCurrent },
+            ]}
+            href={item.href}
+            aria-current={item.isCurrent ? "page" : undefined}
+          >
+            {item.label}
+            {item.badge && <span class="docs-badge">{item.badge.text}</span>}
+          </a>
         </li>
       ) : (
         <li>
-          <a
-            href={item.href}
-            class:list={["docs-sidebar-link", { "docs-sidebar-link--current": item.href === currentPath }]}
-            aria-current={item.href === currentPath ? "page" : undefined}
-          >
-            {item.label}
-            {item.badge && <span class="docs-sidebar-badge">{item.badge}</span>}
-          </a>
+          <details class="docs-sidebar-group" open={!item.collapsed}>
+            <summary class="docs-sidebar-group-label">{item.label}</summary>
+            <ul class="docs-sidebar-list" role="list">
+              <Sidebar items={item.items} />
+            </ul>
+          </details>
         </li>
-      )
-    )}
-  </ul>
-</nav>
+      ),
+    )
+  )
+}

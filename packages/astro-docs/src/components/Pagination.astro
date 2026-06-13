@@ -1,0 +1,32 @@
+---
+import config from "virtual:astro-docs/config";
+import { useTranslations } from "../utils/i18n";
+
+const route = Astro.locals.astroDocs as import("../types").RouteData;
+const t = useTranslations(config.defaultLocale);
+
+const { prev, next } = route.pagination;
+---
+
+{
+  (prev || next) && (
+    <nav class="docs-pagination" aria-label="Pagination">
+      {prev ? (
+        <a class="docs-pagination-link docs-pagination-link--prev" href={prev.href}>
+          <span class="docs-pagination-dir">{t("pagination.prev")}</span>
+          <span class="docs-pagination-label">{prev.label}</span>
+        </a>
+      ) : (
+        <div />
+      )}
+      {next ? (
+        <a class="docs-pagination-link docs-pagination-link--next" href={next.href}>
+          <span class="docs-pagination-dir">{t("pagination.next")}</span>
+          <span class="docs-pagination-label">{next.label}</span>
+        </a>
+      ) : (
+        <div />
+      )}
+    </nav>
+  )
+}

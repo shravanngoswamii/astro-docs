@@ -1,28 +1,33 @@
 ---
-import type { Breadcrumb } from "../utils/breadcrumbs";
+import config from "virtual:astro-docs/config";
+import { useTranslations } from "../utils/i18n";
 
-interface Props {
-  items: Breadcrumb[];
-}
+const route = Astro.locals.astroDocs;
+const t = useTranslations(config.defaultLocale);
 
-const { items } = Astro.props;
+const crumbs = route.breadcrumbs;
+const last = crumbs.length - 1;
 ---
 
-{items.length > 1 && (
-  <nav class="docs-breadcrumbs" aria-label="Breadcrumb">
-    <ol class="docs-breadcrumbs-list">
-      {items.map((crumb, i) => (
-        <li class="docs-breadcrumbs-item">
-          {crumb.href ? (
-            <a href={crumb.href}>{crumb.label}</a>
-          ) : (
-            <span aria-current="page">{crumb.label}</span>
-          )}
-          {i < items.length - 1 && (
-            <span class="docs-breadcrumbs-sep" aria-hidden="true">/</span>
-          )}
-        </li>
-      ))}
-    </ol>
-  </nav>
-)}
+{
+  crumbs.length > 1 && (
+    <nav class="docs-breadcrumbs" aria-label={t("breadcrumbs.label")}>
+      <ol class="docs-breadcrumbs-list">
+        {crumbs.map((c, i) => (
+          <li class="docs-breadcrumbs-item">
+            {c.href ? (
+              <a href={c.href}>{c.label}</a>
+            ) : (
+              <span aria-current="page">{c.label}</span>
+            )}
+            {i < last && (
+              <span class="docs-breadcrumbs-sep" aria-hidden="true">
+                /
+              </span>
+            )}
+          </li>
+        ))}
+      </ol>
+    </nav>
+  )
+}

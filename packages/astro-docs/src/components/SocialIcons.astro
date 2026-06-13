@@ -1,0 +1,18 @@
+---
+import config from "virtual:astro-docs/config";
+
+const social = config.social ?? [];
+---
+
+{
+  social.length > 0 && (
+    <div class="docs-social">
+      {social.map((s) => (
+        <a href={s.href} aria-label={s.label} rel="me noopener" target="_blank">
+          <span aria-hidden="true">{s.icon}</span>
+          <span class="sr-only">{s.label}</span>
+        </a>
+      ))}
+    </div>
+  )
+}

@@ -1,0 +1,23 @@
+---
+import config from "virtual:astro-docs/config";
+import { useTranslations } from "../utils/i18n";
+
+const route = Astro.locals.astroDocs as import("../types").RouteData;
+const t = useTranslations(config.defaultLocale);
+
+const lastUpdated = route.lastUpdated;
+const formatted = lastUpdated?.toLocaleDateString("en-US", {
+  year: "numeric",
+  month: "long",
+  day: "numeric",
+});
+---
+
+{
+  lastUpdated && (
+    <span class="docs-last-updated">
+      {t("lastUpdated.label")}{" "}
+      <time datetime={lastUpdated.toISOString()}>{formatted}</time>
+    </span>
+  )
+}

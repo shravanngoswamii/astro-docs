@@ -1,0 +1,72 @@
+---
+import "@pagefind/default-ui/css/ui.css";
+import config from "virtual:astro-docs/config";
+import { useTranslations } from "../utils/i18n";
+
+const t = useTranslations(config.defaultLocale);
+---
+
+<button class="docs-search-button" data-open-search aria-label={t("search.label")}>
+  <span>{t("search.label")}</span>
+  <kbd class="docs-search-kbd">{t("search.shortcut")}</kbd>
+</button>
+
+<dialog class="docs-search-dialog" data-search-dialog>
+  <div class="docs-search-dialog-inner">
+    <div id="docs-search"></div>
+  </div>
+</dialog>
+
+<script>
+  const button = document.querySelector<HTMLButtonElement>("[data-open-search]");
+  const dialog = document.querySelector<HTMLDialogElement>("[data-search-dialog]");
+  const container = document.querySelector<HTMLElement>("#docs-search");
+
+  let initialized = false;
+
+  async function initSearch() {
+    if (initialized || !container) return;
+    initialized = true;
+
+    try {
+      // @ts-expect-error — @pagefind/default-ui ships no types.
+      const { PagefindUI } = await import("@pagefind/default-ui");
+      new PagefindUI({
+        element: "#docs-search",
+        showSubResults: true,
+        bundlePath: "/pagefind/",
+      });
+    } catch {
+      // The pagefind index only exists after a production build.
+      container.innerHTML =
+        '<p style="padding:0.5rem;font-size:0.85rem;">Search is available in production builds.</p>';
+    }
+  }
+
+  function open() {
+    if (!dialog) return;
+    void initSearch();
+    dialog.showModal();
+    dialog.querySelector<HTMLInputElement>("input")?.focus();
+  }
+
+  function close() {
+    dialog?.close();
+  }
+
+  button?.addEventListener("click", open);
+
+  document.addEventListener("keydown", (event) => {
+    if ((event.metaKey || event.ctrlKey) && event.key.toLowerCase() === "k") {
+      event.preventDefault();
+      open();
+    } else if (event.key === "Escape") {
+      close();
+    }
+  });
+
+  // Close when the backdrop (the dialog element itself, outside its content) is clicked.
+  dialog?.addEventListener("click", (event) => {
+    if (event.target === dialog) close();
+  });
+</script>

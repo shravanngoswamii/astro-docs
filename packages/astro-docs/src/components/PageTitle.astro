@@ -1,0 +1,11 @@
+---
+const route = Astro.locals.astroDocs;
+
+const chapterNumber = route.book?.chapterNumber;
+const title =
+  chapterNumber !== undefined
+    ? `${chapterNumber}. ${route.title}`
+    : route.title;
+---
+
+<h1 class="docs-title" id="main-content">{title}</h1>

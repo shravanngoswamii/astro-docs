@@ -1,0 +1,50 @@
+---
+import Header from "virtual:astro-docs/components/Header";
+import Sidebar from "virtual:astro-docs/components/Sidebar";
+import Breadcrumbs from "virtual:astro-docs/components/Breadcrumbs";
+import PageTitle from "virtual:astro-docs/components/PageTitle";
+import Banner from "virtual:astro-docs/components/Banner";
+import TableOfContents from "virtual:astro-docs/components/TableOfContents";
+import MobileTableOfContents from "virtual:astro-docs/components/MobileTableOfContents";
+import MarkdownContent from "virtual:astro-docs/components/MarkdownContent";
+import Footer from "virtual:astro-docs/components/Footer";
+
+const route = Astro.locals.astroDocs;
+const hasSidebar = route.sidebar.length > 0;
+const hasToc = Boolean(route.toc && route.toc.length);
+---
+
+<header class="docs-header" data-pagefind-ignore>
+  <Header />
+</header>
+
+<div class="docs-layout">
+  {hasSidebar && (
+    <aside class="docs-sidebar" data-pagefind-ignore>
+      <Sidebar />
+    </aside>
+  )}
+
+  <div class="docs-main">
+    <div class="docs-content">
+      <Banner />
+      <Breadcrumbs />
+      {hasToc && <MobileTableOfContents />}
+      <article class="docs-article" data-pagefind-body>
+        <PageTitle />
+        <div class="docs-prose">
+          <MarkdownContent>
+            <slot />
+          </MarkdownContent>
+        </div>
+      </article>
+      <Footer />
+    </div>
+
+    {hasToc && (
+      <aside class="docs-toc-rail" data-pagefind-ignore>
+        <TableOfContents />
+      </aside>
+    )}
+  </div>
+</div>

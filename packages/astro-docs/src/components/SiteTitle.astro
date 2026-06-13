@@ -1,0 +1,28 @@
+---
+import config from "virtual:astro-docs/config";
+import Logo from "virtual:astro-docs/components/Logo";
+
+const siteTitle =
+  typeof config.title === "string"
+    ? config.title
+    : (config.title[config.defaultLocale ?? "en"] ??
+      Object.values(config.title)[0]);
+
+const homeHref = Object.values(config.collections)[0]?.base ?? "/";
+
+const hasLogo = Boolean(config.logo);
+const showTitle = !(config.logo?.replacesTitle ?? false);
+---
+
+{
+  hasLogo ? (
+    <a class="docs-header-title" href={homeHref}>
+      <Logo />
+      {showTitle && <span>{siteTitle}</span>}
+    </a>
+  ) : (
+    <a class="docs-header-title" href={homeHref}>
+      {siteTitle}
+    </a>
+  )
+}

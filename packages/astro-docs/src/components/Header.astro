@@ -1,0 +1,15 @@
+---
+import config from "virtual:astro-docs/config";
+import SiteTitle from "virtual:astro-docs/components/SiteTitle";
+import Search from "virtual:astro-docs/components/Search";
+import SocialIcons from "virtual:astro-docs/components/SocialIcons";
+import ThemeSelect from "virtual:astro-docs/components/ThemeSelect";
+---
+
+<SiteTitle />
+<div class="docs-header-spacer"></div>
+<div class="docs-header-actions">
+  <Search />
+  {config.social.length > 0 && <SocialIcons />}
+  {config.colorScheme !== "light" && <ThemeSelect />}
+</div>

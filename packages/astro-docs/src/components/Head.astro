@@ -1,0 +1,62 @@
+---
+import config from "virtual:astro-docs/config";
+
+const route = Astro.locals.astroDocs as import("../types").RouteData;
+
+const siteTitle =
+  typeof config.title === "string"
+    ? config.title
+    : (config.title[config.defaultLocale ?? "en"] ?? Object.values(config.title)[0]);
+
+const pageTitle =
+  route.title === siteTitle ? siteTitle : `${route.title} — ${siteTitle}`;
+
+const description = route.description ?? config.description;
+
+const faviconType = config.favicon.endsWith(".svg")
+  ? "image/svg+xml"
+  : undefined;
+
+const canonical = Astro.site ? new URL(route.url, Astro.site) : undefined;
+
+const escapeAttr = (value: string | number | boolean) =>
+  String(value).replace(/&/g, "&amp;").replace(/"/g, "&quot;");
+
+const escapeText = (value: string) =>
+  value.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
+
+const headExtra = (config.head ?? [])
+  .map((entry) => {
+    const attrs = Object.entries(entry.attrs ?? {})
+      .map(([key, value]) => ` ${key}="${escapeAttr(value)}"`)
+      .join("");
+    const body = entry.content ? escapeText(entry.content) : "";
+    return `<${entry.tag}${attrs}>${body}</${entry.tag}>`;
+  })
+  .join("\n");
+---
+
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>{pageTitle}</title>
+{description && <meta name="description" content={description} />}
+<link rel="icon" href={config.favicon} type={faviconType} />
+<meta name="generator" content={Astro.generator} />
+
+{canonical && <link rel="canonical" href={canonical.href} />}
+
+<meta property="og:title" content={pageTitle} />
+{description && <meta property="og:description" content={description} />}
+<meta property="og:type" content="website" />
+{canonical && <meta property="og:url" content={canonical.href} />}
+
+{
+  config.math && (
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.css"
+    />
+  )
+}
+
+{headExtra && <Fragment set:html={headExtra} />}

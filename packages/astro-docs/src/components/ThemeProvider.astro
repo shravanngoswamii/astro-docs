@@ -1,0 +1,20 @@
+---
+import config from "virtual:astro-docs/config";
+
+// "both" follows the OS preference when no choice is stored; otherwise the
+// resolved scheme is a fixed default the inline script applies before paint.
+const colorScheme = config.colorScheme;
+---
+
+<script is:inline define:vars={{ colorScheme }}>
+  (() => {
+    const stored = localStorage.getItem("astro-docs-theme");
+    const fallback =
+      colorScheme === "both"
+        ? matchMedia("(prefers-color-scheme: dark)").matches
+          ? "dark"
+          : "light"
+        : colorScheme;
+    document.documentElement.dataset.theme = stored === "dark" || stored === "light" ? stored : fallback;
+  })();
+</script>
