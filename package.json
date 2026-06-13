@@ -1,20 +1,14 @@
 {
-  "name": "astro-paper-docs",
-  "version": "0.1.0",
+  "name": "astro-docs-workspace",
+  "private": true,
   "type": "module",
-  "description": "Headless documentation framework for Astro. You bring the CSS.",
-  "keywords": ["astro", "astro-component", "docs", "documentation"],
-  "author": "Shravan Goswami <contact@shravangoswami.com> (https://shravangoswami.com)",
-  "license": "MIT",
-  "exports": {
-    ".": "./src/index.ts",
-    "./styles/default.css": "./src/styles/default.css"
-  },
-  "peerDependencies": {
-    "astro": ">=5.0.0"
-  },
-  "devDependencies": {
-    "astro": "^6.4.4",
-    "typescript": "^5.0.0"
+  "workspaces": [
+    "packages/*",
+    "examples/*"
+  ],
+  "scripts": {
+    "build": "npm run build --workspace=examples/playground",
+    "dev": "npm run dev --workspace=examples/playground",
+    "test": "npm run test --workspace=packages/astro-docs"
   }
 }
