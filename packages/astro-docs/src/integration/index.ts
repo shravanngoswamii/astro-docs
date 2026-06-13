@@ -34,6 +34,7 @@ export const COMPONENT_NAMES: readonly OverridableComponentName[] = [
   "SkipLink",
   "PageFrame",
   "Header",
+  "MobileMenuToggle",
   "SiteTitle",
   "Logo",
   "Search",
@@ -96,7 +97,10 @@ export default function astroDocs(options: AstroDocsOptions): AstroIntegration {
         const integrations: AstroIntegration[] = [];
         const existing = config.integrations.map((i) => i.name);
 
-        if (parsed.expressiveCode !== false) {
+        if (
+          parsed.expressiveCode !== false &&
+          !existing.includes("astro-expressive-code")
+        ) {
           integrations.push(...docsExpressiveCode(parsed.expressiveCode));
         }
         if (parsed.sitemap && !existing.includes("@astrojs/sitemap")) {
@@ -164,11 +168,15 @@ export default function astroDocs(options: AstroDocsOptions): AstroIntegration {
 }
 declare module "virtual:astro-docs/config" {
   const config: import("astro-docs/schema").AstroDocsConfig & {
-    collections: Record<string, { kind: "docs" | "book"; base: string }>;
+    collections: Record<
+      string,
+      { kind: "docs" | "book"; base: string; sidebar?: import("astro-docs/schema").SidebarConfig }
+    >;
   };
   export default config;
 }
 declare module "virtual:astro-docs/user-css" {}
+declare module "virtual:astro-docs/theme-css" {}
 declare module "virtual:astro-docs/pagefind-config" {
   const options: Record<string, unknown>;
   export default options;

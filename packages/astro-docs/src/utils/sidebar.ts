@@ -38,7 +38,14 @@ export function normalizeSlug(id: string): string {
 
 function hrefFor(base: string, slug: string): string {
   const b = normalizeBase(base);
-  return slug ? `${b}/${slug}` : b;
+  if (!slug) return b;
+  // Avoid a leading "//" when base is root, which browsers treat as protocol-relative.
+  return b === "/" ? `/${slug}` : `${b}/${slug}`;
+}
+
+function samePath(a: string, b: string): boolean {
+  const strip = (s: string) => (s.length > 1 ? s.replace(/\/$/, "") : s);
+  return strip(a) === strip(b);
 }
 
 function humanize(segment: string): string {
@@ -122,9 +129,12 @@ function renderNode(
   });
 
   const groupItems = [...node.dirs.entries()].map(([name, child]) => {
-    const { items, hasCurrent } = renderNode(child, base, currentSlug, collapsed);
+    const { items, hasCurrent: childHasCurrent } = renderNode(child, base, currentSlug, collapsed);
     const label = child.index?.data.sidebar.label ?? child.index?.data.title ?? humanize(name);
     const order = child.index ? orderOf(child.index) : Infinity;
+    const indexSlug = child.index ? normalizeSlug(child.index.id) : undefined;
+    const href = indexSlug !== undefined ? hrefFor(base, indexSlug) : undefined;
+    const hasCurrent = childHasCurrent || (indexSlug !== undefined && indexSlug === currentSlug);
     return {
       sortKey: { order, label },
       resolved: {
@@ -133,6 +143,7 @@ function renderNode(
         collapsed: collapsed && !hasCurrent,
         items,
         hasCurrent,
+        href,
       },
       hasCurrent,
     };
@@ -243,7 +254,7 @@ function resolveItem(
     type: "link",
     label: item.label,
     href,
-    isCurrent: href === hrefFor(base, currentSlug),
+    isCurrent: samePath(href, hrefFor(base, currentSlug)),
     badge: normalizeConfigBadge(item.badge),
     attrs: item.attrs as LinkAttrs | undefined,
   };

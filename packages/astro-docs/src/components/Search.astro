@@ -11,7 +11,7 @@ const t = useTranslations(config.defaultLocale);
   <kbd class="docs-search-kbd">{t("search.shortcut")}</kbd>
 </button>
 
-<dialog class="docs-search-dialog" data-search-dialog>
+<dialog class="docs-search-dialog" data-search-dialog aria-label={t("search.label")}>
   <div class="docs-search-dialog-inner">
     <div id="docs-search"></div>
   </div>
@@ -43,11 +43,14 @@ const t = useTranslations(config.defaultLocale);
     }
   }
 
-  function open() {
+  async function open() {
     if (!dialog) return;
-    void initSearch();
+    await initSearch();
     dialog.showModal();
-    dialog.querySelector<HTMLInputElement>("input")?.focus();
+    // The Pagefind input mounts asynchronously; focus once it exists.
+    requestAnimationFrame(() => {
+      dialog.querySelector<HTMLInputElement>("input")?.focus();
+    });
   }
 
   function close() {

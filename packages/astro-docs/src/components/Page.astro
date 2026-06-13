@@ -27,9 +27,9 @@ const enableThemeJs = config.colorScheme !== "light";
 <html lang={lang} dir={dir} data-theme="light">
   <head>
     <Head />
+    {enableThemeJs && <ThemeProvider />}
   </head>
   <body class="docs-body">
-    {enableThemeJs && <ThemeProvider />}
     <SkipLink />
     <PageFrame>
       <slot />

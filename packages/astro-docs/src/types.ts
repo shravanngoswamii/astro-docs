@@ -47,6 +47,8 @@ export type ResolvedSidebarItem =
       badge?: Badge;
       items: ResolvedSidebarItem[];
       hasCurrent: boolean;
+      /** Set when the directory has an index page, making the group label a link. */
+      href?: string;
     };
 
 export interface FigureNumber {
@@ -87,6 +89,7 @@ export type OverridableComponentName =
   | "SkipLink"
   | "PageFrame"
   | "Header"
+  | "MobileMenuToggle"
   | "SiteTitle"
   | "Logo"
   | "Search"

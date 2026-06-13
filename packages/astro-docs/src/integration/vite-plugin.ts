@@ -34,15 +34,20 @@ function defaultComponentPath(srcDir: string, name: string): string {
   return resolve(srcDir, "components", `${name}.astro`);
 }
 
+const BUILTIN_PRESETS = new Set(["paper"]);
+
 /** JS module that imports the selected theme preset CSS (empty for "none"). */
 function resolveThemeCss(theme: string, srcDir: string, root: string): string {
   if (theme === "none") return "";
-  const builtinPreset = resolve(srcDir, "styles", "presets", `${theme}.css`);
-  const path =
-    theme === "paper" || !theme.includes("/") && !theme.includes(".")
-      ? builtinPreset
-      : resolve(root, theme.replace(/^\//, ""));
-  return `import ${JSON.stringify(path)};`;
+  if (BUILTIN_PRESETS.has(theme)) {
+    return `import ${JSON.stringify(resolve(srcDir, "styles", "presets", `${theme}.css`))};`;
+  }
+  // A relative/absolute path resolves against the project root; anything else is
+  // treated as a bare module specifier (mirrors customCss resolution).
+  if (theme.startsWith(".") || theme.startsWith("/")) {
+    return `import ${JSON.stringify(resolve(root, theme.replace(/^\//, "")))};`;
+  }
+  return `import ${JSON.stringify(theme)};`;
 }
 
 export function astroDocsVitePlugin(opts: PluginOptions): VitePlugin {

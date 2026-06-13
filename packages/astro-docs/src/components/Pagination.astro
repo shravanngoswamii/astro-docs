@@ -10,7 +10,7 @@ const { prev, next } = route.pagination;
 
 {
   (prev || next) && (
-    <nav class="docs-pagination" aria-label="Pagination">
+    <nav class="docs-pagination" aria-label={t("pagination.label")}>
       {prev ? (
         <a class="docs-pagination-link docs-pagination-link--prev" href={prev.href}>
           <span class="docs-pagination-dir">{t("pagination.prev")}</span>

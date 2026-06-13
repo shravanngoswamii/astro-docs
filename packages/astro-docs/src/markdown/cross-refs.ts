@@ -7,6 +7,7 @@ interface RefEntry {
   number: string;
   href: string;
   text: string;
+  numbered: boolean;
 }
 
 const KIND_LABELS: Record<RefEntry["kind"], string> = {
@@ -23,8 +24,9 @@ const PREFIX_KIND: Record<string, RefEntry["kind"]> = {
   eq: "equation",
 };
 
-// Hyphen (not colon) so references never collide with remark-directive's `:name` syntax.
-const REF_PATTERN = /@(fig|tbl|sec|eq)-([A-Za-z0-9_-]+)/g;
+function shortPrefix(kind: RefEntry["kind"]): string {
+  return kind === "figure" ? "fig" : kind === "table" ? "tbl" : kind === "equation" ? "eq" : "sec";
+}
 
 function textOf(node: any): string {
   if (!node) return "";
@@ -35,9 +37,12 @@ function textOf(node: any): string {
 
 /**
  * remark plugin (book mode): numbers figures/tables and headings, then resolves
- * `@fig:id` / `@sec:id` / `@tbl:id` references to numbered links. All build-time.
+ * `@fig-id` / `@sec-id` / `@tbl-id` references to numbered links. All build-time.
  */
 export function remarkCrossReferences() {
+  // Local regex so the /g lastIndex is never shared across files.
+  const refPattern = /@(fig|tbl|sec|eq)-([A-Za-z0-9_-]+)/g;
+
   return (tree: Root, file: any) => {
     const frontmatter = file?.data?.astro?.frontmatter ?? {};
     const chapter: number | undefined = frontmatter.chapter;
@@ -49,7 +54,6 @@ export function remarkCrossReferences() {
     const slugger = new GithubSlugger();
     const sectionCounters = [0, 0, 0, 0, 0, 0];
 
-    // Pass 1: number labeled directives and headings.
     visit(tree, (node: any) => {
       if (node.type === "containerDirective" || node.type === "leafDirective") {
         const kind = (
@@ -60,9 +64,8 @@ export function remarkCrossReferences() {
         counters[kind] += 1;
         const number = `${prefix}${counters[kind]}`;
         const domId = id ? `${node.name}-${id}` : `${node.name}-${counters[kind]}`;
-        const caption = node.children?.[0]?.data?.directiveLabel
-          ? textOf(node.children[0])
-          : "";
+        const hasLabel = node.children?.[0]?.data?.directiveLabel;
+        const caption = hasLabel ? textOf(node.children[0]) : "";
 
         if (id) {
           registry[`${shortPrefix(kind)}-${id}`] = {
@@ -70,13 +73,12 @@ export function remarkCrossReferences() {
             number,
             href: `#${domId}`,
             text: caption,
+            numbered: true,
           };
         }
 
-        const bodyChildren = node.children?.[0]?.data?.directiveLabel
-          ? node.children.slice(1)
-          : (node.children ?? []);
-        const tag = kind === "table" ? "figure" : kind === "equation" ? "div" : "figure";
+        const bodyChildren = hasLabel ? node.children.slice(1) : (node.children ?? []);
+        const tag = kind === "equation" ? "div" : "figure";
         Object.assign(node, {
           type: "paragraph",
           data: {
@@ -98,19 +100,24 @@ export function remarkCrossReferences() {
       }
 
       if (node.type === "heading" && node.depth >= 1) {
-        const raw = textOf(node);
+        const raw = textOf(node).trim();
+        if (!raw) return;
         const slug = slugger.slug(raw);
-        // Pin the id from the original text so the numeric prefix below never
-        // shifts it, and so section references resolve to a stable anchor.
         node.data = node.data ?? {};
         node.data.hProperties = { ...(node.data.hProperties ?? {}), id: slug };
+
         let number = "";
+        let numbered = false;
         if (numberSections && node.depth >= 2) {
           const level = node.depth - 2;
+          // Promote skipped ancestor levels so we never emit a "1.0.1".
+          for (let i = 0; i < level; i++) {
+            if (sectionCounters[i] === 0) sectionCounters[i] = 1;
+          }
           sectionCounters[level] += 1;
           for (let i = level + 1; i < sectionCounters.length; i++) sectionCounters[i] = 0;
-          const parts = sectionCounters.slice(0, level + 1);
-          number = `${prefix}${parts.join(".")}`;
+          number = `${prefix}${sectionCounters.slice(0, level + 1).join(".")}`;
+          numbered = true;
           node.children.unshift({ type: "text", value: `${number} ` });
         }
         registry[`sec-${slug}`] = {
@@ -118,21 +125,21 @@ export function remarkCrossReferences() {
           number: number || raw,
           href: `#${slug}`,
           text: raw,
+          numbered,
         };
       }
     });
 
-    // Pass 2: resolve references in text nodes.
     visit(tree, "text", (node: any, index, parent) => {
       if (!parent || index == null) return;
-      REF_PATTERN.lastIndex = 0;
-      if (!REF_PATTERN.test(node.value)) return;
-      REF_PATTERN.lastIndex = 0;
+      refPattern.lastIndex = 0;
+      if (!refPattern.test(node.value)) return;
+      refPattern.lastIndex = 0;
 
       const newNodes: any[] = [];
       let last = 0;
       let m: RegExpExecArray | null;
-      while ((m = REF_PATTERN.exec(node.value)) !== null) {
+      while ((m = refPattern.exec(node.value)) !== null) {
         const [full, p, id] = m;
         const entry = registry[`${p}-${id}`];
         if (m.index > last) {
@@ -140,10 +147,7 @@ export function remarkCrossReferences() {
         }
         if (entry) {
           const kind = PREFIX_KIND[p];
-          const label =
-            entry.number && /\d/.test(entry.number)
-              ? `${KIND_LABELS[kind]} ${entry.number}`
-              : entry.text;
+          const label = entry.numbered ? `${KIND_LABELS[kind]} ${entry.number}` : entry.text;
           newNodes.push({
             type: "link",
             url: entry.href,
@@ -162,8 +166,4 @@ export function remarkCrossReferences() {
       return index + newNodes.length;
     });
   };
-}
-
-function shortPrefix(kind: RefEntry["kind"]): string {
-  return kind === "figure" ? "fig" : kind === "table" ? "tbl" : kind === "equation" ? "eq" : "sec";
 }

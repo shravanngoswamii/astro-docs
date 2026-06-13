@@ -13,7 +13,7 @@
   .docs-content h3 { font-size: 1.2rem; }
   .docs-content h4 { font-size: 1.05rem; }
   .docs-content p { margin: 1rem 0; }
-  .docs-content :where(ul, ol) { margin: 1rem 0; padding-left: 1.5rem; }
+  .docs-content :where(ul, ol) { margin: 1rem 0; padding-inline-start: 1.5rem; }
   .docs-content li { margin: 0.35rem 0; }
   .docs-content a { color: var(--docs-color-accent); text-underline-offset: 0.15em; }
   .docs-content :where(code):not(pre code) {
@@ -25,8 +25,8 @@
   }
   .docs-content blockquote {
     margin: 1.5rem 0;
-    padding-left: 1rem;
-    border-left: 3px solid var(--docs-color-border);
+    padding-inline-start: 1rem;
+    border-inline-start: 3px solid var(--docs-color-border);
     color: var(--docs-color-muted);
   }
   .docs-content hr { border: none; border-top: 1px solid var(--docs-color-border); margin: 2.5rem 0; }
@@ -40,7 +40,7 @@
   .docs-content img { border-radius: var(--docs-border-radius); }
 
   .docs-heading-anchor {
-    margin-left: 0.4rem;
+    margin-inline-start: 0.4rem;
     color: var(--docs-color-muted);
     text-decoration: none;
     opacity: 0;

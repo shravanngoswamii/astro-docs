@@ -8,12 +8,20 @@ import type { ContentKind } from "../types";
 
 export async function getStaticPaths() {
   const paths = [];
+  const seen = new Map<string, string>();
   for (const [name, mount] of Object.entries(config.collections)) {
     const entries = await getCollection(name as any, (e: any) => !e.data.draft);
     const baseTrimmed = mount.base.replace(/^\/+|\/+$/g, "");
     for (const entry of entries) {
       const slug = normalizeSlug(entry.id);
       const full = [baseTrimmed, slug].filter(Boolean).join("/");
+      const prior = seen.get(full);
+      if (prior) {
+        throw new Error(
+          `astro-docs: route collision at "/${full}" between collections "${prior}" and "${name}". Give the collections distinct \`base\` paths.`,
+        );
+      }
+      seen.set(full, name);
       paths.push({
         params: { slug: full || undefined },
         props: {

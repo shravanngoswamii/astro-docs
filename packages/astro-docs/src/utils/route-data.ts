@@ -67,7 +67,7 @@ export function buildRouteData(params: BuildRouteDataParams): RouteData {
   const { config, base, kind, entry, allEntries, headings, sidebarConfig } = params;
   const b = normalizeBase(base);
   const slug = normalizeSlug(entry.id);
-  const url = slug ? `${b}/${slug}` : b;
+  const url = slug ? (b === "/" ? `/${slug}` : `${b}/${slug}`) : b;
 
   const sidebar = buildSidebar({
     config: sidebarConfig ?? config.sidebar,
@@ -82,7 +82,19 @@ export function buildRouteData(params: BuildRouteDataParams): RouteData {
   );
 
   const pagination = config.pagination ? getPrevNext(sidebar, url) : {};
-  const breadcrumbs = buildBreadcrumbs(url, entry.data.title);
+
+  const validHrefs = new Set<string>();
+  const collect = (items: typeof sidebar) => {
+    for (const item of items) {
+      if (item.type === "link") validHrefs.add(item.href);
+      else {
+        if (item.href) validHrefs.add(item.href);
+        collect(item.items);
+      }
+    }
+  };
+  collect(sidebar);
+  const breadcrumbs = buildBreadcrumbs(url, entry.data.title, validHrefs);
 
   const data: RouteData = {
     id: entry.id,

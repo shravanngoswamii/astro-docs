@@ -20,7 +20,7 @@ const hasToc = Boolean(route.toc && route.toc.length);
 
 <div class="docs-layout">
   {hasSidebar && (
-    <aside class="docs-sidebar" data-pagefind-ignore>
+    <aside id="docs-sidebar" class="docs-sidebar" data-pagefind-ignore>
       <Sidebar />
     </aside>
   )}

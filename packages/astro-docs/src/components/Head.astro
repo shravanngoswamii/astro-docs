@@ -19,18 +19,31 @@ const faviconType = config.favicon.endsWith(".svg")
 
 const canonical = Astro.site ? new URL(route.url, Astro.site) : undefined;
 
-const escapeAttr = (value: string | number | boolean) =>
-  String(value).replace(/&/g, "&amp;").replace(/"/g, "&quot;");
+const escapeAttr = (value: string) =>
+  value.replace(/&/g, "&amp;").replace(/"/g, "&quot;");
 
 const escapeText = (value: string) =>
   value.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
 
+// Elements whose content is raw text per the HTML spec — must NOT be entity-escaped.
+const RAW_TEXT = new Set(["script", "style"]);
+const VALID_TAG = /^[a-zA-Z][a-zA-Z0-9-]*$/;
+
 const headExtra = (config.head ?? [])
+  .filter((entry) => VALID_TAG.test(entry.tag))
   .map((entry) => {
     const attrs = Object.entries(entry.attrs ?? {})
-      .map(([key, value]) => ` ${key}="${escapeAttr(value)}"`)
+      .map(([key, value]) => {
+        if (value === undefined || value === false) return "";
+        if (value === true) return ` ${key}`;
+        return ` ${key}="${escapeAttr(String(value))}"`;
+      })
       .join("");
-    const body = entry.content ? escapeText(entry.content) : "";
+    const body = entry.content
+      ? RAW_TEXT.has(entry.tag.toLowerCase())
+        ? entry.content
+        : escapeText(entry.content)
+      : "";
     return `<${entry.tag}${attrs}>${body}</${entry.tag}>`;
   })
   .join("\n");

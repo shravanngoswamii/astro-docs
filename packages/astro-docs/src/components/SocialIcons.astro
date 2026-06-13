@@ -9,7 +9,8 @@ const social = config.social ?? [];
     <div class="docs-social">
       {social.map((s) => (
         <a href={s.href} aria-label={s.label} rel="me noopener" target="_blank">
-          <span aria-hidden="true">{s.icon}</span>
+          {/* `icon` is trusted config: an inline SVG string or a short label. */}
+          <span aria-hidden="true" set:html={s.icon} />
           <span class="sr-only">{s.label}</span>
         </a>
       ))}

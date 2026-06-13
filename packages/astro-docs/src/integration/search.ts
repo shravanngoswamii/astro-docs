@@ -2,23 +2,41 @@ import { fileURLToPath } from "node:url";
 import { createRequire } from "node:module";
 import { execFile } from "node:child_process";
 import { promisify } from "node:util";
+import { readFileSync } from "node:fs";
+import { dirname, join } from "node:path";
 import type { AstroIntegrationLogger } from "astro";
 
 const run = promisify(execFile);
 
-/** Resolve the Pagefind CLI binary shipped with the `pagefind` package. */
+/**
+ * Resolve the Pagefind CLI binary shipped with the `pagefind` package. Resolves
+ * the package's main entry (allowed by its exports map) and walks up to the
+ * package root to read its `bin` field — `require.resolve("pagefind/package.json")`
+ * is blocked by the exports gate and would always throw.
+ */
 function resolvePagefindBin(): string | undefined {
   try {
     const require = createRequire(import.meta.url);
-    const pkg = require.resolve("pagefind/package.json");
-    const bin = require("pagefind/package.json").bin as
-      | string
-      | Record<string, string>;
-    const rel = typeof bin === "string" ? bin : bin.pagefind;
-    return fileURLToPath(new URL(rel, `file://${pkg}`));
+    const entry = require.resolve("pagefind");
+    let dir = dirname(entry);
+    for (let i = 0; i < 8; i++) {
+      try {
+        const pkg = JSON.parse(readFileSync(join(dir, "package.json"), "utf8"));
+        if (pkg.name === "pagefind" && pkg.bin) {
+          const rel = typeof pkg.bin === "string" ? pkg.bin : pkg.bin.pagefind;
+          if (rel) return join(dir, rel);
+        }
+      } catch {
+        // keep walking up
+      }
+      const parent = dirname(dir);
+      if (parent === dir) break;
+      dir = parent;
+    }
   } catch {
-    return undefined;
+    // fall through to npx
   }
+  return undefined;
 }
 
 /**

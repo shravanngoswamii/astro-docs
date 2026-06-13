@@ -1,0 +1,55 @@
+---
+import config from "virtual:astro-docs/config";
+import { useTranslations } from "../utils/i18n";
+
+const t = useTranslations(config.defaultLocale);
+const route = Astro.locals.astroDocs as import("../types").RouteData;
+
+// Only meaningful when there is a sidebar to reveal.
+const hasSidebar = route.sidebar.length > 0;
+---
+
+{
+  hasSidebar && (
+    <button
+      class="docs-mobile-toggle"
+      data-mobile-toggle
+      type="button"
+      aria-controls="docs-sidebar"
+      aria-expanded="false"
+      aria-label={t("sidebar.label")}
+    >
+      <span aria-hidden="true">☰</span>
+    </button>
+  )
+}
+
+<script>
+  const btn = document.querySelector<HTMLButtonElement>("[data-mobile-toggle]");
+  const root = document.documentElement;
+  const sidebar = document.getElementById("docs-sidebar");
+
+  function set(open: boolean) {
+    root.dataset.mobileNav = open ? "open" : "";
+    btn?.setAttribute("aria-expanded", String(open));
+  }
+
+  btn?.addEventListener("click", (e) => {
+    e.stopPropagation();
+    set(root.dataset.mobileNav !== "open");
+  });
+
+  document.addEventListener("keydown", (e) => {
+    if (e.key === "Escape") set(false);
+  });
+
+  document.addEventListener("click", (e) => {
+    if (root.dataset.mobileNav !== "open") return;
+    const target = e.target as Node;
+    if (sidebar && !sidebar.contains(target) && target !== btn) set(false);
+  });
+
+  sidebar?.addEventListener("click", (e) => {
+    if ((e.target as HTMLElement).closest("a")) set(false);
+  });
+</script>

@@ -20,7 +20,7 @@ const DEFAULT_TITLES: Record<CalloutType, string> = {
   danger: "Danger",
 };
 
-function calloutNode(type: CalloutType, title: string, body: unknown[]) {
+function calloutNode(type: CalloutType, titleChildren: unknown[], body: unknown[]) {
   return {
     type: "paragraph",
     data: {
@@ -31,7 +31,7 @@ function calloutNode(type: CalloutType, title: string, body: unknown[]) {
       {
         type: "paragraph",
         data: { hName: "p", hProperties: { className: ["docs-callout-title"] } },
-        children: [{ type: "text", value: title }],
+        children: titleChildren,
       },
       {
         type: "paragraph",
@@ -56,13 +56,13 @@ export function remarkAsides() {
       const type = TYPES[node.name];
       if (!type) return;
       const labelChild = node.children?.[0];
-      let title = DEFAULT_TITLES[type];
+      let titleChildren: unknown[] = [{ type: "text", value: DEFAULT_TITLES[type] }];
       let body = node.children ?? [];
       if (labelChild?.data?.directiveLabel) {
-        title = labelChild.children?.[0]?.value ?? title;
+        if (labelChild.children?.length) titleChildren = labelChild.children;
         body = node.children.slice(1);
       }
-      const replacement = calloutNode(type, title, body);
+      const replacement = calloutNode(type, titleChildren, body);
       Object.assign(node, replacement);
     });
 
@@ -81,7 +81,11 @@ export function remarkAsides() {
       if (firstText.value === "" && first.children.length === 1) {
         node.children.shift();
       }
-      const replacement = calloutNode(type, DEFAULT_TITLES[type], node.children);
+      const replacement = calloutNode(
+        type,
+        [{ type: "text", value: DEFAULT_TITLES[type] }],
+        node.children,
+      );
       Object.assign(node, replacement);
     });
   };

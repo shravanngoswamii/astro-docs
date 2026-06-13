@@ -97,6 +97,18 @@ describe("manual sidebar config", () => {
   });
 });
 
+describe("base '/' (root mount)", () => {
+  it("does not produce protocol-relative double-slash hrefs", () => {
+    const tree = buildSidebar({ entries, base: "/", currentSlug: "" });
+    const flat = flattenSidebar(tree);
+    for (const link of flat) {
+      expect(link.href.startsWith("//")).toBe(false);
+    }
+    expect(flat.some((l) => l.href === "/guides/getting-started")).toBe(true);
+    expect(flat.some((l) => l.href === "/")).toBe(true);
+  });
+});
+
 describe("getPrevNext", () => {
   it("returns neighbors in flattened order", () => {
     const tree = buildSidebar({ entries, base: "/docs", currentSlug: "" });
