@@ -1,18 +1,18 @@
 export {
-  UserConfigSchema,
-  type AstroDocsUserConfig,
-  type AstroDocsConfig,
+	type AstroDocsConfig,
+	type AstroDocsUserConfig,
+	UserConfigSchema,
 } from "./config";
 export {
-  sidebarSchema,
-  badgeSchema,
-  type SidebarConfig,
-  type SidebarItemInput,
-} from "./sidebar";
-export {
-  contentSchema,
-  docsSchema,
-  bookSchema,
-  type DocsFrontmatter,
-  type BookFrontmatter,
+	type BookFrontmatter,
+	bookSchema,
+	contentSchema,
+	type DocsFrontmatter,
+	docsSchema,
 } from "./content";
+export {
+	badgeSchema,
+	type SidebarConfig,
+	type SidebarItemInput,
+	sidebarSchema,
+} from "./sidebar";

@@ -8,7 +8,7 @@ export type UIKey = keyof UIStrings;
  * locale so multi-locale support can be added without changing call sites.
  */
 export function useTranslations(_locale?: string) {
-  return function t(key: UIKey): string {
-    return en[key] ?? key;
-  };
+	return function t(key: UIKey): string {
+		return en[key] ?? key;
+	};
 }

@@ -1,1 +1,6 @@
-@layer docs.tokens, docs.reset, docs.theme, docs.components, docs.content, docs.utils;
+@layer docs.tokens,
+	docs.reset,
+	docs.theme,
+	docs.components,
+	docs.content,
+	docs.utils;

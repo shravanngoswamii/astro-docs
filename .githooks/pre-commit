@@ -1,0 +1,5 @@
+#!/usr/bin/env sh
+set -e
+
+# Format + lint gate. Run `pnpm fix` to auto-resolve formatting/lint issues.
+pnpm exec biome check .

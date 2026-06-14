@@ -2,18 +2,18 @@
 type CalloutType = "note" | "tip" | "important" | "warning" | "danger";
 
 interface Props {
-  type?: CalloutType;
-  title?: string;
+	type?: CalloutType;
+	title?: string;
 }
 
 const { type = "note", title } = Astro.props;
 
 const defaultTitles: Record<CalloutType, string> = {
-  note: "Note",
-  tip: "Tip",
-  important: "Important",
-  warning: "Warning",
-  danger: "Danger",
+	note: "Note",
+	tip: "Tip",
+	important: "Important",
+	warning: "Warning",
+	danger: "Danger",
 };
 ---
 

@@ -4,49 +4,50 @@ import config from "virtual:astro-docs/config";
 const route = Astro.locals.astroDocs as import("../types").RouteData;
 
 const siteTitle =
-  typeof config.title === "string"
-    ? config.title
-    : (config.title[config.defaultLocale ?? "en"] ?? Object.values(config.title)[0]);
+	typeof config.title === "string"
+		? config.title
+		: (config.title[config.defaultLocale ?? "en"] ??
+			Object.values(config.title)[0]);
 
 const pageTitle =
-  route.title === siteTitle ? siteTitle : `${route.title} — ${siteTitle}`;
+	route.title === siteTitle ? siteTitle : `${route.title} — ${siteTitle}`;
 
 const description = route.description ?? config.description;
 
 const faviconType = config.favicon.endsWith(".svg")
-  ? "image/svg+xml"
-  : undefined;
+	? "image/svg+xml"
+	: undefined;
 
 const canonical = Astro.site ? new URL(route.url, Astro.site) : undefined;
 
 const escapeAttr = (value: string) =>
-  value.replace(/&/g, "&amp;").replace(/"/g, "&quot;");
+	value.replace(/&/g, "&amp;").replace(/"/g, "&quot;");
 
 const escapeText = (value: string) =>
-  value.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
+	value.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
 
 // Elements whose content is raw text per the HTML spec — must NOT be entity-escaped.
 const RAW_TEXT = new Set(["script", "style"]);
 const VALID_TAG = /^[a-zA-Z][a-zA-Z0-9-]*$/;
 
 const headExtra = (config.head ?? [])
-  .filter((entry) => VALID_TAG.test(entry.tag))
-  .map((entry) => {
-    const attrs = Object.entries(entry.attrs ?? {})
-      .map(([key, value]) => {
-        if (value === undefined || value === false) return "";
-        if (value === true) return ` ${key}`;
-        return ` ${key}="${escapeAttr(String(value))}"`;
-      })
-      .join("");
-    const body = entry.content
-      ? RAW_TEXT.has(entry.tag.toLowerCase())
-        ? entry.content
-        : escapeText(entry.content)
-      : "";
-    return `<${entry.tag}${attrs}>${body}</${entry.tag}>`;
-  })
-  .join("\n");
+	.filter((entry) => VALID_TAG.test(entry.tag))
+	.map((entry) => {
+		const attrs = Object.entries(entry.attrs ?? {})
+			.map(([key, value]) => {
+				if (value === undefined || value === false) return "";
+				if (value === true) return ` ${key}`;
+				return ` ${key}="${escapeAttr(String(value))}"`;
+			})
+			.join("");
+		const body = entry.content
+			? RAW_TEXT.has(entry.tag.toLowerCase())
+				? entry.content
+				: escapeText(entry.content)
+			: "";
+		return `<${entry.tag}${attrs}>${body}</${entry.tag}>`;
+	})
+	.join("\n");
 ---
 
 <meta charset="utf-8" />

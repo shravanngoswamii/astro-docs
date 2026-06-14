@@ -1,7 +1,7 @@
-import astroExpressiveCode, {
-  type AstroExpressiveCodeOptions,
-} from "astro-expressive-code";
 import type { AstroIntegration } from "astro";
+import astroExpressiveCode, {
+	type AstroExpressiveCodeOptions,
+} from "astro-expressive-code";
 
 /**
  * Expressive Code configured for the docs aesthetic: dual light/dark themes
@@ -10,23 +10,23 @@ import type { AstroIntegration } from "astro";
  * JS is the optional copy button.
  */
 export function docsExpressiveCode(
-  userOptions: Record<string, unknown> | true,
+	userOptions: Record<string, unknown> | true,
 ): AstroIntegration[] {
-  const overrides = typeof userOptions === "object" ? userOptions : {};
-  const options: AstroExpressiveCodeOptions = {
-    themes: ["github-light", "github-dark"],
-    themeCssSelector: (theme) => `[data-theme="${theme.type}"]`,
-    useDarkModeMediaQuery: false,
-    styleOverrides: {
-      codeBackground: "var(--docs-color-code-bg)",
-      borderColor: "var(--docs-color-border)",
-      borderRadius: "var(--docs-border-radius, 0)",
-      frames: {
-        shadowColor: "transparent",
-      },
-      ...(overrides.styleOverrides as object | undefined),
-    },
-    ...overrides,
-  };
-  return [astroExpressiveCode(options)];
+	const overrides = typeof userOptions === "object" ? userOptions : {};
+	const options: AstroExpressiveCodeOptions = {
+		themes: ["github-light", "github-dark"],
+		themeCssSelector: (theme) => `[data-theme="${theme.type}"]`,
+		useDarkModeMediaQuery: false,
+		styleOverrides: {
+			codeBackground: "var(--docs-color-code-bg)",
+			borderColor: "var(--docs-color-border)",
+			borderRadius: "var(--docs-border-radius, 0)",
+			frames: {
+				shadowColor: "transparent",
+			},
+			...(overrides.styleOverrides as object | undefined),
+		},
+		...overrides,
+	};
+	return [astroExpressiveCode(options)];
 }

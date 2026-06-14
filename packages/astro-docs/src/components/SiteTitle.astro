@@ -3,10 +3,10 @@ import config from "virtual:astro-docs/config";
 import Logo from "virtual:astro-docs/components/Logo";
 
 const siteTitle =
-  typeof config.title === "string"
-    ? config.title
-    : (config.title[config.defaultLocale ?? "en"] ??
-      Object.values(config.title)[0]);
+	typeof config.title === "string"
+		? config.title
+		: (config.title[config.defaultLocale ?? "en"] ??
+			Object.values(config.title)[0]);
 
 const homeHref = Object.values(config.collections)[0]?.base ?? "/";
 

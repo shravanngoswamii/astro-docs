@@ -1,8 +1,8 @@
 import { defineCollection } from "astro:content";
-import { docsLoader, bookLoader } from "astro-docs/loaders";
-import { docsSchema, bookSchema } from "astro-docs/schema";
+import { bookLoader, docsLoader } from "astro-docs/loaders";
+import { bookSchema, docsSchema } from "astro-docs/schema";
 
 export const collections = {
-  docs: defineCollection({ loader: docsLoader(), schema: docsSchema }),
-  book: defineCollection({ loader: bookLoader(), schema: bookSchema }),
+	docs: defineCollection({ loader: docsLoader(), schema: docsSchema }),
+	book: defineCollection({ loader: bookLoader(), schema: bookSchema }),
 };

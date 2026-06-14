@@ -17,11 +17,15 @@ import PageFrame from "virtual:astro-docs/components/PageFrame";
 
 const route = Astro.locals.astroDocs;
 const lang =
-  (config.locales && config.defaultLocale && config.locales[config.defaultLocale]?.lang) ||
-  "en";
+	(config.locales &&
+		config.defaultLocale &&
+		config.locales[config.defaultLocale]?.lang) ||
+	"en";
 const dir =
-  (config.locales && config.defaultLocale && config.locales[config.defaultLocale]?.dir) ||
-  "ltr";
+	(config.locales &&
+		config.defaultLocale &&
+		config.locales[config.defaultLocale]?.dir) ||
+	"ltr";
 const enableThemeJs = config.colorScheme !== "light";
 ---
 

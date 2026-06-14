@@ -7,51 +7,57 @@ import { normalizeSlug } from "../utils/sidebar";
 import type { ContentKind } from "../types";
 
 export async function getStaticPaths() {
-  const paths = [];
-  const seen = new Map<string, string>();
-  for (const [name, mount] of Object.entries(config.collections)) {
-    const entries = await getCollection(name as any, (e: any) => !e.data.draft);
-    const baseTrimmed = mount.base.replace(/^\/+|\/+$/g, "");
-    for (const entry of entries) {
-      const slug = normalizeSlug(entry.id);
-      const full = [baseTrimmed, slug].filter(Boolean).join("/");
-      const prior = seen.get(full);
-      if (prior) {
-        throw new Error(
-          `astro-docs: route collision at "/${full}" between collections "${prior}" and "${name}". Give the collections distinct \`base\` paths.`,
-        );
-      }
-      seen.set(full, name);
-      paths.push({
-        params: { slug: full || undefined },
-        props: {
-          collectionName: name,
-          kind: mount.kind as ContentKind,
-          base: mount.base,
-          entryId: entry.id,
-          sidebarConfig: mount.sidebar,
-        },
-      });
-    }
-  }
-  return paths;
+	const paths = [];
+	const seen = new Map<string, string>();
+	for (const [name, mount] of Object.entries(config.collections)) {
+		const entries = await getCollection(name as any, (e: any) => !e.data.draft);
+		const baseTrimmed = mount.base.replace(/^\/+|\/+$/g, "");
+		for (const entry of entries) {
+			const slug = normalizeSlug(entry.id);
+			const full = [baseTrimmed, slug].filter(Boolean).join("/");
+			const prior = seen.get(full);
+			if (prior) {
+				throw new Error(
+					`astro-docs: route collision at "/${full}" between collections "${prior}" and "${name}". Give the collections distinct \`base\` paths.`,
+				);
+			}
+			seen.set(full, name);
+			paths.push({
+				params: { slug: full || undefined },
+				props: {
+					collectionName: name,
+					kind: mount.kind as ContentKind,
+					base: mount.base,
+					entryId: entry.id,
+					sidebarConfig: mount.sidebar,
+				},
+			});
+		}
+	}
+	return paths;
 }
 
 const { collectionName, kind, base, entryId, sidebarConfig } = Astro.props;
-const allEntries = await getCollection(collectionName as any, (e: any) => !e.data.draft);
+const allEntries = await getCollection(
+	collectionName as any,
+	(e: any) => !e.data.draft,
+);
 const entry = allEntries.find((e: any) => e.id === entryId);
-if (!entry) throw new Error(`astro-docs: entry "${entryId}" not found in "${collectionName}".`);
+if (!entry)
+	throw new Error(
+		`astro-docs: entry "${entryId}" not found in "${collectionName}".`,
+	);
 
 const { Content, headings } = await render(entry);
 
 Astro.locals.astroDocs = buildRouteData({
-  config,
-  base,
-  kind,
-  entry: entry as any,
-  allEntries: allEntries as any,
-  headings,
-  sidebarConfig,
+	config,
+	base,
+	kind,
+	entry: entry as any,
+	allEntries: allEntries as any,
+	headings,
+	sidebarConfig,
 });
 ---
 
