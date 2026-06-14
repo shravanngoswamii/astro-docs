@@ -1,0 +1,30 @@
+/* Slate — neutral grayscale, no color accent. A calm, professional default. */
+@layer docs.theme {
+	:root {
+		--docs-color-bg: #f8fafc;
+		--docs-color-surface: #ffffff;
+		--docs-color-surface-muted: #f1f5f9;
+		--docs-color-text: #0f172a;
+		--docs-color-muted: #64748b;
+		--docs-color-border: #e2e8f0;
+		--docs-color-code-bg: #f1f5f9;
+		--docs-color-sidebar-active-bg: #eef2f6;
+		--docs-color-accent: #475569;
+		--docs-color-accent-strong: #1e293b;
+		--docs-color-warning: #b45309;
+	}
+
+	[data-theme="dark"] {
+		--docs-color-bg: #0f172a;
+		--docs-color-surface: #1e293b;
+		--docs-color-surface-muted: #334155;
+		--docs-color-text: #f1f5f9;
+		--docs-color-muted: #94a3b8;
+		--docs-color-border: #334155;
+		--docs-color-code-bg: #0b1120;
+		--docs-color-sidebar-active-bg: #1e293b;
+		--docs-color-accent: #cbd5e1;
+		--docs-color-accent-strong: #f1f5f9;
+		--docs-color-warning: #fbbf24;
+	}
+}

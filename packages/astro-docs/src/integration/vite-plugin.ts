@@ -34,7 +34,13 @@ function defaultComponentPath(srcDir: string, name: string): string {
 	return resolve(srcDir, "components", `${name}.astro`);
 }
 
-const BUILTIN_PRESETS = new Set(["paper"]);
+const BUILTIN_PRESETS = new Set([
+	"paper",
+	"nord",
+	"dracula",
+	"rose-pine",
+	"slate",
+]);
 
 /** JS module that imports the selected theme preset CSS (empty for the built-in base). */
 function resolveThemeCss(theme: string, srcDir: string, root: string): string {

@@ -1,0 +1,30 @@
+/* Dracula — purple-forward. Light (Alucard-ish) + dark (classic Dracula). */
+@layer docs.theme {
+	:root {
+		--docs-color-bg: #f7f7fb;
+		--docs-color-surface: #ffffff;
+		--docs-color-surface-muted: #eeeef6;
+		--docs-color-text: #1f1f2e;
+		--docs-color-muted: #61618a;
+		--docs-color-border: #e0e0ee;
+		--docs-color-code-bg: #f0f0f8;
+		--docs-color-sidebar-active-bg: #e9e9f5;
+		--docs-color-accent: #7b3fbf;
+		--docs-color-accent-strong: #6a2fb0;
+		--docs-color-warning: #b8860b;
+	}
+
+	[data-theme="dark"] {
+		--docs-color-bg: #282a36;
+		--docs-color-surface: #343746;
+		--docs-color-surface-muted: #3c3f51;
+		--docs-color-text: #f8f8f2;
+		--docs-color-muted: #b6b8cd;
+		--docs-color-border: #44475a;
+		--docs-color-code-bg: #21222c;
+		--docs-color-sidebar-active-bg: #343746;
+		--docs-color-accent: #bd93f9;
+		--docs-color-accent-strong: #ff79c6;
+		--docs-color-warning: #ffb86c;
+	}
+}

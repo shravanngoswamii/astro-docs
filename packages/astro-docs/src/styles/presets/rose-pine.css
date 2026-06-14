@@ -1,0 +1,30 @@
+/* Rosé Pine — soho vibes. Light (Dawn) + dark (Main). */
+@layer docs.theme {
+	:root {
+		--docs-color-bg: #faf4ed;
+		--docs-color-surface: #fffaf3;
+		--docs-color-surface-muted: #f2e9e1;
+		--docs-color-text: #575279;
+		--docs-color-muted: #797593;
+		--docs-color-border: #dfdad9;
+		--docs-color-code-bg: #f2e9e1;
+		--docs-color-sidebar-active-bg: #f4ede4;
+		--docs-color-accent: #907aa9;
+		--docs-color-accent-strong: #7c6f9a;
+		--docs-color-warning: #ea9d34;
+	}
+
+	[data-theme="dark"] {
+		--docs-color-bg: #191724;
+		--docs-color-surface: #1f1d2e;
+		--docs-color-surface-muted: #26233a;
+		--docs-color-text: #e0def4;
+		--docs-color-muted: #908caa;
+		--docs-color-border: #26233a;
+		--docs-color-code-bg: #16141f;
+		--docs-color-sidebar-active-bg: #1f1d2e;
+		--docs-color-accent: #c4a7e7;
+		--docs-color-accent-strong: #ebbcba;
+		--docs-color-warning: #f6c177;
+	}
+}

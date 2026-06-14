@@ -1,0 +1,30 @@
+/* Nord — cool arctic palette. Light (Snow Storm) + dark (Polar Night). */
+@layer docs.theme {
+	:root {
+		--docs-color-bg: #f7f9fb;
+		--docs-color-surface: #ffffff;
+		--docs-color-surface-muted: #eceff4;
+		--docs-color-text: #2e3440;
+		--docs-color-muted: #4c566a;
+		--docs-color-border: #d8dee9;
+		--docs-color-code-bg: #eceff4;
+		--docs-color-sidebar-active-bg: #e5e9f0;
+		--docs-color-accent: #5e81ac;
+		--docs-color-accent-strong: #4c6a92;
+		--docs-color-warning: #bf616a;
+	}
+
+	[data-theme="dark"] {
+		--docs-color-bg: #2e3440;
+		--docs-color-surface: #3b4252;
+		--docs-color-surface-muted: #434c5e;
+		--docs-color-text: #eceff4;
+		--docs-color-muted: #c0c8d6;
+		--docs-color-border: #434c5e;
+		--docs-color-code-bg: #272c36;
+		--docs-color-sidebar-active-bg: #3b4252;
+		--docs-color-accent: #88c0d0;
+		--docs-color-accent-strong: #8fbcbb;
+		--docs-color-warning: #ebcb8b;
+	}
+}
