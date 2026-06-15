@@ -50,6 +50,7 @@
 		background: transparent;
 	}
 	[data-docs-kind="book"] .docs-callout {
+		--docs-callout-color: var(--docs-color-muted);
 		background: var(--docs-color-code-bg);
 	}
 }

@@ -9,15 +9,61 @@ const { toc } = route;
 
 {
   toc && toc.length > 0 && (
-    <nav class="docs-toc" aria-label={t("toc.label")}>
+    <nav class="docs-toc" aria-label={t("toc.label")} data-docs-toc>
       <p class="docs-toc-title">{t("toc.label")}</p>
       <ul class="docs-toc-list" role="list">
         {toc.map((h) => (
           <li class:list={["docs-toc-item", `docs-toc-item--depth-${h.depth}`]}>
-            <a href={`#${h.slug}`}>{h.text}</a>
+            <a href={`#${h.slug}`} data-toc-link={h.slug}>
+              {h.text}
+            </a>
           </li>
         ))}
       </ul>
     </nav>
   )
 }
+
+<script>
+  // Highlight the section currently in view. Progressive enhancement: with no
+  // JS the TOC still works as plain anchor links.
+  const toc = document.querySelector<HTMLElement>("[data-docs-toc]");
+  if (toc && "IntersectionObserver" in window) {
+    const links = new Map<string, HTMLElement>();
+    for (const a of toc.querySelectorAll<HTMLElement>("[data-toc-link]")) {
+      const id = a.getAttribute("data-toc-link");
+      if (id) links.set(id, a.closest(".docs-toc-item") as HTMLElement);
+    }
+
+    const headings = [...links.keys()]
+      .map((id) => document.getElementById(id))
+      .filter((el): el is HTMLElement => el !== null);
+
+    const visible = new Set<string>();
+    const setActive = () => {
+      let activeId: string | null = null;
+      for (const h of headings) {
+        if (visible.has(h.id)) {
+          activeId = h.id;
+          break;
+        }
+      }
+      for (const [id, item] of links) {
+        item.classList.toggle("docs-toc-item--active", id === activeId);
+      }
+    };
+
+    const observer = new IntersectionObserver(
+      (entries) => {
+        for (const entry of entries) {
+          if (entry.isIntersecting) visible.add(entry.target.id);
+          else visible.delete(entry.target.id);
+        }
+        setActive();
+      },
+      { rootMargin: "-80px 0px -70% 0px", threshold: 0 },
+    );
+
+    for (const h of headings) observer.observe(h);
+  }
+</script>

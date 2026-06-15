@@ -1,135 +1,167 @@
 @layer docs.content {
-	.docs-content {
+	/* ── Page title ──────────────────────────────────────────── */
+	.docs-title {
+		font-family: var(--docs-font-display);
+		font-size: var(--docs-text-title);
+		font-weight: var(--docs-weight-bold);
+		line-height: var(--docs-leading-tight);
+		letter-spacing: var(--docs-tracking-tight);
+		margin: 0 0 var(--docs-space-8);
+		text-wrap: balance;
+	}
+
+	/* ── Prose ───────────────────────────────────────────────── */
+	.docs-prose {
 		overflow-wrap: break-word;
 	}
+	.docs-prose > :first-child {
+		margin-top: 0;
+	}
 
-	.docs-content :where(h1, h2, h3, h4, h5, h6) {
-		line-height: 1.25;
-		letter-spacing: -0.005em;
-		margin-top: 2.4rem;
-		margin-bottom: 0.7rem;
-		scroll-margin-top: calc(var(--docs-header-height) + 1rem);
+	.docs-prose :where(h2, h3, h4, h5, h6) {
+		font-family: var(--docs-font-display);
+		font-weight: var(--docs-weight-semibold);
+		line-height: var(--docs-leading-tight);
+		letter-spacing: var(--docs-tracking-tight);
+		scroll-margin-top: calc(var(--docs-header-height) + var(--docs-space-4));
 		color: var(--docs-color-text);
 	}
-	.docs-title {
-		font-size: clamp(2rem, 4vw, 2.6rem);
-		margin-top: 0;
-		margin-bottom: 1.5rem;
-		padding-bottom: 1.3rem;
-		border-bottom: 1px solid var(--docs-color-border);
+	.docs-prose h2 {
+		font-size: var(--docs-text-2xl);
+		margin: var(--docs-space-12) 0 var(--docs-space-4);
+		padding-top: var(--docs-space-2);
 	}
-	.docs-content h2 {
-		font-size: 1.55rem;
+	.docs-prose h3 {
+		font-size: var(--docs-text-xl);
+		margin: var(--docs-space-8) 0 var(--docs-space-3);
 	}
-	.docs-content h3 {
-		font-size: 1.22rem;
-	}
-	.docs-content h4 {
-		font-size: 1.05rem;
+	.docs-prose h4 {
+		font-size: var(--docs-text-lg);
+		margin: var(--docs-space-6) 0 var(--docs-space-2);
 	}
 
-	.docs-content p,
-	.docs-content li {
-		color: color-mix(
-			in srgb,
-			var(--docs-color-text) 82%,
-			var(--docs-color-muted)
-		);
+	.docs-prose p {
+		margin: var(--docs-space-4) 0;
 	}
-	.docs-content p {
-		margin: 1rem 0;
+	.docs-prose :where(ul, ol) {
+		margin: var(--docs-space-4) 0;
+		padding-inline-start: var(--docs-space-6);
 	}
-	.docs-content :where(ul, ol) {
-		margin: 1rem 0;
-		padding-inline-start: 1.5rem;
+	.docs-prose li {
+		margin: var(--docs-space-2) 0;
 	}
-	.docs-content li {
-		margin: 0.35rem 0;
-	}
-	.docs-content li::marker {
+	.docs-prose li::marker {
 		color: var(--docs-color-accent);
 	}
+	.docs-prose :where(ul, ol) :where(ul, ol) {
+		margin: var(--docs-space-2) 0;
+	}
 
-	.docs-content a {
+	.docs-prose a {
 		color: var(--docs-color-accent-strong);
-		font-weight: 600;
+		font-weight: var(--docs-weight-medium);
+		text-decoration: underline;
 		text-underline-offset: 0.18em;
+		text-decoration-thickness: 1px;
 		text-decoration-color: color-mix(
 			in srgb,
-			var(--docs-color-accent) 45%,
+			var(--docs-color-accent) 40%,
 			transparent
 		);
+		transition: text-decoration-color var(--docs-transition);
 	}
-	.docs-content a:hover {
+	.docs-prose a:hover {
 		text-decoration-color: currentColor;
 	}
 
-	.docs-content :where(code):not(pre code) {
-		font-family: var(--docs-font-mono);
-		font-size: 0.9em;
-		padding: 0.12em 0.36em;
-		border: 1px solid var(--docs-color-border);
-		border-radius: 5px;
-		background: var(--docs-color-surface-muted);
+	.docs-prose strong {
+		font-weight: var(--docs-weight-semibold);
 		color: var(--docs-color-text);
 	}
 
-	.docs-content blockquote {
-		margin: 1.3rem 0;
-		padding: 0.7rem 1rem;
+	.docs-prose :where(code):not(pre code) {
+		font-family: var(--docs-font-mono);
+		font-size: 0.86em;
+		padding: 0.12em 0.38em;
+		border: 1px solid var(--docs-color-border);
+		border-radius: var(--docs-radius-sm);
+		background: var(--docs-color-surface-muted);
+		color: var(--docs-color-text);
+		white-space: nowrap;
+	}
+
+	.docs-prose .expressive-code {
+		margin: var(--docs-space-5) 0;
+	}
+
+	.docs-prose blockquote {
+		margin: var(--docs-space-6) 0;
+		padding: var(--docs-space-2) var(--docs-space-5);
 		border-inline-start: 3px solid var(--docs-color-accent);
-		border-radius: 0 6px 6px 0;
-		background: color-mix(in srgb, var(--docs-color-accent) 6%, transparent);
+		border-radius: 0 var(--docs-radius-sm) var(--docs-radius-sm) 0;
+		background: color-mix(in srgb, var(--docs-color-accent) 5%, transparent);
 		color: var(--docs-color-muted);
 	}
-	.docs-content blockquote :where(p):first-child {
+	.docs-prose blockquote :where(p):first-child {
 		margin-top: 0;
 	}
-	.docs-content blockquote :where(p):last-child {
+	.docs-prose blockquote :where(p):last-child {
 		margin-bottom: 0;
 	}
 
-	.docs-content hr {
+	.docs-prose hr {
 		border: none;
 		border-top: 1px solid var(--docs-color-border);
-		margin: 2.5rem 0;
+		margin: var(--docs-space-12) 0;
 	}
 
-	.docs-content table {
+	.docs-prose table {
 		display: block;
 		width: 100%;
 		overflow-x: auto;
 		border-collapse: collapse;
-		margin: 1.5rem 0;
-		font-size: 0.94rem;
+		margin: var(--docs-space-6) 0;
+		font-size: var(--docs-text-sm);
 	}
-	.docs-content :where(th, td) {
-		border-bottom: 1px solid var(--docs-color-border);
-		padding: 0.6rem 0.8rem;
+	.docs-prose :where(th, td) {
+		border: 1px solid var(--docs-color-border);
+		padding: var(--docs-space-2) var(--docs-space-3);
 		text-align: start;
 		vertical-align: top;
 	}
-	.docs-content th {
-		color: var(--docs-color-text);
-		font-weight: 700;
+	.docs-prose th {
+		font-weight: var(--docs-weight-semibold);
+		background: var(--docs-color-surface-muted);
 	}
 
-	.docs-content img {
+	.docs-prose img {
 		border-radius: var(--docs-border-radius);
 	}
 
+	.docs-prose kbd {
+		font-family: var(--docs-font-mono);
+		font-size: 0.8em;
+		padding: 0.15em 0.4em;
+		border: 1px solid var(--docs-color-border);
+		border-bottom-width: 2px;
+		border-radius: var(--docs-radius-sm);
+		background: var(--docs-color-surface);
+	}
+
+	/* ── Heading anchors ─────────────────────────────────────── */
 	.docs-heading-anchor {
-		margin-inline-start: 0.4rem;
-		color: var(--docs-color-muted);
+		margin-inline-start: var(--docs-space-2);
+		color: var(--docs-color-faint);
 		text-decoration: none;
 		opacity: 0;
-		transition: opacity 0.1s;
+		transition:
+			opacity var(--docs-transition),
+			color var(--docs-transition);
 	}
-	.docs-content :where(h1, h2, h3, h4, h5, h6):hover .docs-heading-anchor {
-		opacity: 0.6;
+	.docs-prose :where(h1, h2, h3, h4, h5, h6):hover .docs-heading-anchor {
+		opacity: 1;
 	}
 	.docs-heading-anchor:hover {
-		opacity: 1 !important;
 		color: var(--docs-color-accent);
 	}
 }
