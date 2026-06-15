@@ -158,6 +158,9 @@
 			opacity var(--docs-transition),
 			color var(--docs-transition);
 	}
+	.docs-heading-anchor::before {
+		content: "#";
+	}
 	.docs-prose :where(h1, h2, h3, h4, h5, h6):hover .docs-heading-anchor {
 		opacity: 1;
 	}

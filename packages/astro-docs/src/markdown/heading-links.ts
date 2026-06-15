@@ -46,17 +46,19 @@ export function rehypeHeadingLinks() {
 				"docs-heading",
 			];
 
+			// No text child — the glyph comes from CSS so Astro's heading-text
+			// collection (used for the TOC) stays clean.
 			node.children.push({
 				type: "element",
 				tagName: "a",
 				properties: {
 					href: `#${id}`,
 					className: ["docs-heading-anchor"],
-					"aria-hidden": "true",
+					"aria-label": `Link to ${textContent(node).trim()}`,
 					tabindex: "-1",
 					"data-pagefind-ignore": true,
 				},
-				children: [{ type: "text", value: "#" }],
+				children: [],
 			});
 		});
 	};
