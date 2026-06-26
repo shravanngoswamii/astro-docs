@@ -2,7 +2,10 @@ packages:
   - "packages/*"
   - "examples/*"
 
-onlyBuiltDependencies:
-  - esbuild
-  - sharp
-  - "@biomejs/biome"
+# Install the latest releases immediately, without the new-package age gate.
+minimumReleaseAge: 0
+
+allowBuilds:
+  esbuild: true
+  sharp: true
+  "@biomejs/biome": true

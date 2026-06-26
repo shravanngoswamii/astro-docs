@@ -2,6 +2,7 @@
 
 import { dirname, resolve } from "node:path";
 import { fileURLToPath } from "node:url";
+import { unified } from "@astrojs/markdown-remark";
 import mdx from "@astrojs/mdx";
 import sitemap from "@astrojs/sitemap";
 import type { AstroIntegration } from "astro";
@@ -135,16 +136,21 @@ export default function astroDocs(options: AstroDocsOptions): AstroIntegration {
 					});
 				}
 
-				const remarkPlugins: any[] = [remarkDirective, remarkAsides];
-				const rehypePlugins: any[] = [rehypeHeadingLinks];
+				// Astro 7's default Markdown processor (Sätteri) doesn't run
+				// remark/rehype plugins, so opt into the unified processor and add
+				// ours to it. unified() keeps GFM/smart-punctuation/highlighting.
+				const processor: any = unified();
 				const hasBook = Object.values(collections).some(
 					(c) => c.kind === "book",
 				);
-				if (hasBook) remarkPlugins.push(remarkCrossReferences);
+				processor.options.remarkPlugins.push(remarkDirective, remarkAsides);
+				if (hasBook)
+					processor.options.remarkPlugins.push(remarkCrossReferences);
 				if (parsed.math) {
-					remarkPlugins.push(remarkMath);
-					rehypePlugins.push([rehypeKatex, {}]);
+					processor.options.remarkPlugins.push(remarkMath);
+					processor.options.rehypePlugins.push([rehypeKatex, {}]);
 				}
+				processor.options.rehypePlugins.push(rehypeHeadingLinks);
 
 				updateConfig({
 					vite: {
@@ -159,7 +165,7 @@ export default function astroDocs(options: AstroDocsOptions): AstroIntegration {
 							}),
 						],
 					},
-					markdown: { remarkPlugins, rehypePlugins },
+					markdown: { processor },
 					scopedStyleStrategy: "where",
 				});
 			},
