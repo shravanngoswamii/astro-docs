@@ -9,6 +9,7 @@ export default defineConfig({
 		astroDocs({
 			title: "Astro Docs Playground",
 			description: "A demo of the astro-docs framework: docs and a book.",
+			logo: { light: "/logo.svg", dark: "/logo-dark.svg", alt: "astro-docs" },
 			colorScheme: "both",
 			math: true,
 			lastUpdated: true,

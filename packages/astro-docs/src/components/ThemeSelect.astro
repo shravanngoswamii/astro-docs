@@ -11,7 +11,15 @@ const t = useTranslations(config.defaultLocale);
   type="button"
   aria-pressed="false"
   aria-label={t("themeSelect.label")}
-  title={t("themeSelect.label")}>◐</button>
+  title={t("themeSelect.label")}
+>
+  <svg class="docs-icon-sun" aria-hidden="true" viewBox="0 0 24 24" fill="currentColor">
+    <path d="M12 17.2a5.2 5.2 0 1 0 0-10.4 5.2 5.2 0 0 0 0 10.4Zm0-14.7a1 1 0 0 1 1 1v1.2a1 1 0 1 1-2 0V3.5a1 1 0 0 1 1-1Zm0 16.8a1 1 0 0 1 1 1v1.2a1 1 0 1 1-2 0v-1.2a1 1 0 0 1 1-1Zm9.5-8.3a1 1 0 1 1 0 2h-1.2a1 1 0 1 1 0-2h1.2ZM4.7 11a1 1 0 1 1 0 2H3.5a1 1 0 1 1 0-2h1.2Zm13.74-6.44a1 1 0 0 1 0 1.42l-.85.85a1 1 0 0 1-1.42-1.42l.85-.85a1 1 0 0 1 1.42 0ZM7.83 16.17a1 1 0 0 1 0 1.42l-.85.85a1 1 0 0 1-1.42-1.42l.85-.85a1 1 0 0 1 1.42 0Zm9.76 0 .85.85a1 1 0 1 1-1.42 1.42l-.85-.85a1 1 0 0 1 1.42-1.42ZM6.98 4.56l.85.85a1 1 0 0 1-1.42 1.42l-.85-.85a1 1 0 1 1 1.42-1.42Z" />
+  </svg>
+  <svg class="docs-icon-moon" aria-hidden="true" viewBox="0 0 24 24" fill="currentColor">
+    <path d="M21 14.58A8.2 8.2 0 0 1 9.42 3a9.25 9.25 0 1 0 11.59 11.59Z" />
+  </svg>
+</button>
 
 <script>
   const KEY = "astro-docs-theme";

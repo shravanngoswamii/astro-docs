@@ -1,19 +1,21 @@
 ---
 import config from "virtual:astro-docs/config";
+import { joinBase } from "../utils/base";
 
 const logo = config.logo;
 const hasVariants = logo !== undefined && "dark" in logo;
+const b = (src: string) => joinBase(import.meta.env.BASE_URL, src);
 ---
 
 {
   logo !== undefined &&
     (hasVariants ? (
       <span class="docs-logo">
-        <img class="docs-logo-light" src={logo.light} alt={logo.alt} height="28" />
-        <img class="docs-logo-dark" src={logo.dark} alt={logo.alt} height="28" />
+        <img class="docs-logo-light" src={b(logo.light)} alt={logo.alt} height="26" />
+        <img class="docs-logo-dark" src={b(logo.dark)} alt={logo.alt} height="26" />
       </span>
     ) : (
-      <img class="docs-logo" src={logo.src} alt={logo.alt} height="28" />
+      <img class="docs-logo" src={b(logo.src)} alt={logo.alt} height="26" />
     ))
 }
 

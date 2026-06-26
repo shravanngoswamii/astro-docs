@@ -1,9 +1,11 @@
 ---
 import "@pagefind/default-ui/css/ui.css";
 import config from "virtual:astro-docs/config";
+import { joinBase } from "../utils/base";
 import { useTranslations } from "../utils/i18n";
 
 const t = useTranslations(config.defaultLocale);
+const pagefindBundle = `${joinBase(import.meta.env.BASE_URL, "/pagefind")}/`;
 ---
 
 <button class="docs-search-button" data-open-search aria-label={t("search.label")}>
@@ -13,7 +15,7 @@ const t = useTranslations(config.defaultLocale);
 
 <dialog class="docs-search-dialog" data-search-dialog aria-label={t("search.label")}>
   <div class="docs-search-dialog-inner">
-    <div id="docs-search"></div>
+    <div id="docs-search" data-bundle={pagefindBundle}></div>
   </div>
 </dialog>
 
@@ -34,7 +36,7 @@ const t = useTranslations(config.defaultLocale);
       new PagefindUI({
         element: "#docs-search",
         showSubResults: true,
-        bundlePath: `${import.meta.env.BASE_URL}pagefind/`,
+        bundlePath: container.dataset.bundle ?? "/pagefind/",
       });
     } catch {
       // The pagefind index only exists after a production build.
