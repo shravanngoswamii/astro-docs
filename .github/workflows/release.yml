@@ -17,8 +17,8 @@ jobs:
     steps:
       - uses: actions/checkout@v7
       - uses: ./.github/actions/setup
-      # Opens/updates the release PR while changesets pend; publishes to npm
-      # (with provenance) once it's merged. Needs the NPM_TOKEN secret.
+      # Opens/updates the release PR while changesets pend; publishes to npm via
+      # OIDC trusted publishing (no token) with provenance once it's merged.
       - id: changesets
         uses: changesets/action@v1
         with:
@@ -29,7 +29,6 @@ jobs:
           commitMode: github-api
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
           NPM_CONFIG_PROVENANCE: "true"
       - name: Add versions to the release PR title
         if: steps.changesets.outputs.pullRequestNumber != ''
