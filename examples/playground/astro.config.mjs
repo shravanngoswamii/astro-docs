@@ -3,7 +3,8 @@ import { defineConfig } from "astro/config";
 import astroDocs from "astro-docs";
 
 export default defineConfig({
-	site: "https://example.com",
+	site: process.env.SITE ?? "https://example.com",
+	base: process.env.BASE_PATH ?? "/",
 	integrations: [
 		astroDocs({
 			title: "Astro Docs Playground",

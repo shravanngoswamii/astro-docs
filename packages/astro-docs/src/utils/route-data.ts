@@ -1,6 +1,7 @@
 import type { MarkdownHeading } from "astro";
 import type { AstroDocsConfig } from "../schema/config";
-import type { ContentKind, RouteData } from "../types";
+import type { ContentKind, ResolvedSidebarItem, RouteData } from "../types";
+import { joinBase } from "./base";
 import { buildBreadcrumbs } from "./breadcrumbs";
 import {
 	buildSidebar,
@@ -36,6 +37,18 @@ export interface BuildRouteDataParams {
 	headings: MarkdownHeading[];
 	/** Sidebar config for this collection; falls back to the global config sidebar. */
 	sidebarConfig?: AstroDocsConfig["sidebar"];
+	/** Astro's `import.meta.env.BASE_URL`, applied to every generated href. */
+	astroBase?: string;
+}
+
+function prefixSidebar(items: ResolvedSidebarItem[], base: string): void {
+	for (const item of items) {
+		if (item.type === "link") item.href = joinBase(base, item.href);
+		else {
+			if (item.href) item.href = joinBase(base, item.href);
+			prefixSidebar(item.items, base);
+		}
+	}
 }
 
 function normalizeBase(base: string): string {
@@ -61,8 +74,16 @@ function resolveLastUpdated(entry: EntryLike): Date | undefined {
 }
 
 export function buildRouteData(params: BuildRouteDataParams): RouteData {
-	const { config, base, kind, entry, allEntries, headings, sidebarConfig } =
-		params;
+	const {
+		config,
+		base,
+		kind,
+		entry,
+		allEntries,
+		headings,
+		sidebarConfig,
+		astroBase = "/",
+	} = params;
 	const b = normalizeBase(base);
 	const slug = normalizeSlug(entry.id);
 	const url = slug ? (b === "/" ? `/${slug}` : `${b}/${slug}`) : b;
@@ -94,10 +115,21 @@ export function buildRouteData(params: BuildRouteDataParams): RouteData {
 	collect(sidebar);
 	const breadcrumbs = buildBreadcrumbs(url, entry.data.title, validHrefs);
 
+	// Apply the deploy base path once, after prev/next and breadcrumbs have been
+	// matched against the unprefixed hrefs.
+	prefixSidebar(sidebar, astroBase);
+	for (const crumb of breadcrumbs) {
+		if (crumb.href) crumb.href = joinBase(astroBase, crumb.href);
+	}
+	if (pagination.prev)
+		pagination.prev.href = joinBase(astroBase, pagination.prev.href);
+	if (pagination.next)
+		pagination.next.href = joinBase(astroBase, pagination.next.href);
+
 	const data: RouteData = {
 		id: entry.id,
 		slug,
-		url,
+		url: joinBase(astroBase, url),
 		kind,
 		title: entry.data.title,
 		description: entry.data.description,

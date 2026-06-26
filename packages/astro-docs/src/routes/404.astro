@@ -3,16 +3,16 @@ import { getCollection } from "astro:content";
 import config from "virtual:astro-docs/config";
 import Page from "../components/Page.astro";
 import { buildSidebar, type SidebarEntry } from "../utils/sidebar";
+import { joinBase } from "../utils/base";
 import { useTranslations } from "../utils/i18n";
 
 const t = useTranslations(config.defaultLocale);
+const astroBase = import.meta.env.BASE_URL;
 
 const [primary] = Object.entries(config.collections);
 let sidebar: ReturnType<typeof buildSidebar> = [];
-let base = "/";
 if (primary) {
 	const [name, mount] = primary;
-	base = mount.base;
 	const entries = (await getCollection(
 		name as any,
 		(e: any) => !e.data.draft,
@@ -20,15 +20,25 @@ if (primary) {
 	sidebar = buildSidebar({
 		config: mount.sidebar ?? config.sidebar,
 		entries,
-		base,
+		base: mount.base,
 		currentSlug: "\0none",
 	});
+	const prefix = (items: typeof sidebar) => {
+		for (const item of items) {
+			if (item.type === "link") item.href = joinBase(astroBase, item.href);
+			else {
+				if (item.href) item.href = joinBase(astroBase, item.href);
+				prefix(item.items);
+			}
+		}
+	};
+	prefix(sidebar);
 }
 
 Astro.locals.astroDocs = {
 	id: "404",
 	slug: "404",
-	url: "/404",
+	url: joinBase(astroBase, "/404"),
 	kind: "docs",
 	title: t("404.title"),
 	headings: [],
