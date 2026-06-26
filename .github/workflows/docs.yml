@@ -18,7 +18,7 @@ jobs:
       - uses: ./.github/actions/setup
       - run: pnpm --filter playground build
         env:
-          SITE: https://shravanngoswamii.github.io
+          SITE: https://shravangoswami.com
           BASE_PATH: /astro-docs
       - uses: peaceiris/actions-gh-pages@v4
         with:

@@ -7,7 +7,7 @@ features, but the docs look like *your* site, not the framework.
 [![npm](https://img.shields.io/npm/v/astro-docs.svg)](https://www.npmjs.com/package/astro-docs)
 [![license](https://img.shields.io/npm/l/astro-docs.svg)](./packages/astro-docs/LICENSE)
 
-**Docs:** https://shravanngoswamii.github.io/astro-docs/ · **Package:** [`packages/astro-docs`](./packages/astro-docs)
+**Docs:** https://shravangoswami.com/astro-docs/ · **Package:** [`packages/astro-docs`](./packages/astro-docs)
 
 ## Why
 
@@ -37,7 +37,7 @@ export default defineConfig({
 ```
 
 Then define a content collection and drop Markdown into `src/content/docs/`. See
-the [package README](./packages/astro-docs) and the [docs site](https://shravanngoswamii.github.io/astro-docs/) for the full guide.
+the [package README](./packages/astro-docs) and the [docs site](https://shravangoswami.com/astro-docs/) for the full guide.
 
 ## Repository layout
 
