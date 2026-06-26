@@ -17,6 +17,8 @@ jobs:
     steps:
       - uses: actions/checkout@v7
       - uses: ./.github/actions/setup
+      # OIDC trusted publishing needs npm >= 11.5.1; Node ships npm 10.
+      - run: npm install -g npm@latest
       # Opens/updates the release PR while changesets pend; publishes to npm via
       # OIDC trusted publishing (no token) with provenance once it's merged.
       - id: changesets
