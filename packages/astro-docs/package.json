@@ -1,6 +1,6 @@
 {
 	"name": "astro-docs",
-	"version": "0.1.0",
+	"version": "0.0.0",
 	"type": "module",
 	"description": "A customizable documentation and book framework for Astro. Bring your own look.",
 	"keywords": [

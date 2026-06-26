@@ -1,6 +1,31 @@
+# dependencies
 node_modules/
+
+# build output
 dist/
+build/
 .astro/
-.DS_Store
 *.tsbuildinfo
+
+# test / coverage
+coverage/
+
+# search index (generated)
 pagefind/
+
+# tooling caches
+.turbo/
+.cache/
+
+# logs
+*.log
+npm-debug.log*
+
+# env
+.env
+.env.*
+!.env.example
+
+# editor / os
+.DS_Store
+.idea/

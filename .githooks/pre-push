@@ -1,0 +1,7 @@
+#!/usr/bin/env sh
+set -e
+
+# Fuller gate before sharing: types, tests, and a real build.
+pnpm typecheck
+pnpm test
+pnpm build
