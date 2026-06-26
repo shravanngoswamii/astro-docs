@@ -17,17 +17,28 @@ jobs:
     steps:
       - uses: actions/checkout@v7
       - uses: ./.github/actions/setup
-      # While changesets are pending, this opens or updates the "Version Packages"
-      # PR. When that PR is merged (no changesets left), it publishes the changed
-      # packages to npm with provenance, tags the release, and creates a GitHub
-      # Release. Requires the NPM_TOKEN secret (an npm automation token).
-      - uses: changesets/action@v1
+      # Opens/updates the release PR while changesets pend; publishes to npm
+      # (with provenance) once it's merged. Needs the NPM_TOKEN secret.
+      - id: changesets
+        uses: changesets/action@v1
         with:
           version: pnpm version-packages
           publish: pnpm release
-          title: "Release: version packages"
-          commit: "chore: version packages"
+          title: "Release the next package versions"
+          commit: "version packages"
+          commitMode: github-api
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
           NPM_CONFIG_PROVENANCE: "true"
+      - name: Add versions to the release PR title
+        if: steps.changesets.outputs.pullRequestNumber != ''
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          PR: ${{ steps.changesets.outputs.pullRequestNumber }}
+        run: |
+          versions=$(gh pr view "$PR" --json body --jq '.body' \
+            | grep -oE '^## .+@[0-9]+\.[0-9]+\.[0-9]+' | sed 's/^## //' | paste -sd, - | sed 's/,/, /g')
+          if [ -n "$versions" ]; then
+            gh pr edit "$PR" --title "Release: $versions"
+          fi
