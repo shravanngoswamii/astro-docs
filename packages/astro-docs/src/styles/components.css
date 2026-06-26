@@ -166,23 +166,47 @@
 		padding: 0;
 	}
 	.docs-sidebar-group {
-		margin-bottom: var(--docs-space-6);
+		margin-bottom: var(--docs-space-5);
 	}
 	.docs-sidebar-group-label {
 		display: flex;
 		align-items: center;
-		justify-content: space-between;
+		gap: 0.45rem;
 		font-weight: var(--docs-weight-semibold);
 		font-size: var(--docs-text-xs);
 		text-transform: uppercase;
 		letter-spacing: var(--docs-tracking-label);
-		color: var(--docs-color-faint);
+		color: var(--docs-color-muted);
 		margin-bottom: var(--docs-space-2);
-		padding-inline-start: var(--docs-space-3);
+		padding: 0.3rem var(--docs-space-3);
+		border-radius: var(--docs-radius-sm);
 		cursor: pointer;
+		list-style: none;
+		transition:
+			color var(--docs-transition),
+			background var(--docs-transition);
+	}
+	.docs-sidebar-group-label:hover {
+		color: var(--docs-color-text);
+		background: var(--docs-color-surface-muted);
 	}
 	.docs-sidebar-group-label::-webkit-details-marker {
 		display: none;
+	}
+	/* Leading chevron: points right when collapsed, down when open. */
+	.docs-sidebar-group-label::before {
+		content: "";
+		flex: none;
+		width: 0.36rem;
+		height: 0.36rem;
+		border-right: 2px solid currentColor;
+		border-bottom: 2px solid currentColor;
+		transform: rotate(-45deg);
+		transition: transform var(--docs-transition);
+		opacity: 0.85;
+	}
+	.docs-sidebar-group[open] > .docs-sidebar-group-label::before {
+		transform: rotate(45deg);
 	}
 	.docs-sidebar-link {
 		position: relative;
