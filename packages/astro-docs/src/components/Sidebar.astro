@@ -43,25 +43,28 @@ const sidebarItems = items ?? route.sidebar;
           </a>
         </li>
       ) : (
-        <li>
-          <details class="docs-sidebar-group" open={!item.collapsed}>
-            <summary class="docs-sidebar-group-label">
-              {item.href ? (
-                <a
-                  class:list={["docs-sidebar-group-link", { "docs-sidebar-link--current": item.hasCurrent && item.href === route.url }]}
-                  href={item.href}
-                >
-                  {item.label}
-                </a>
-              ) : (
-                item.label
-              )}
+        <li class="docs-sidebar-group">
+          {item.href ? (
+            <a
+              class:list={[
+                "docs-sidebar-group-label",
+                "docs-sidebar-group-label--link",
+                { "docs-sidebar-group-label--current": item.href === route.url },
+              ]}
+              href={item.href}
+            >
+              {item.label}
               {item.badge && <span class="docs-badge">{item.badge.text}</span>}
-            </summary>
-            <ul class="docs-sidebar-list" role="list">
-              <Sidebar items={item.items} />
-            </ul>
-          </details>
+            </a>
+          ) : (
+            <div class="docs-sidebar-group-label">
+              {item.label}
+              {item.badge && <span class="docs-badge">{item.badge.text}</span>}
+            </div>
+          )}
+          <ul class="docs-sidebar-list" role="list">
+            <Sidebar items={item.items} />
+          </ul>
         </li>
       ),
     )
